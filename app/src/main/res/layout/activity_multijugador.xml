@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#9664EF"
-    tools:context=".PerfilActivity">
+    android:backgroundTint="#9664EF"
+    tools:context=".MultijugadorActivity">
 
 </androidx.constraintlayout.widget.ConstraintLayout>

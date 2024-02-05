@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#9664EF"
-    tools:context=".PerfilActivity">
+    android:background="#673AB7"
+    tools:context=".JuegoActivity">
 
 </androidx.constraintlayout.widget.ConstraintLayout>

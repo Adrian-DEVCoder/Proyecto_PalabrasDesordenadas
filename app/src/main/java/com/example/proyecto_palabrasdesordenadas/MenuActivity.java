@@ -2,12 +2,14 @@ package com.example.proyecto_palabrasdesordenadas;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 public class MenuActivity extends AppCompatActivity {
 
@@ -34,7 +36,9 @@ public class MenuActivity extends AppCompatActivity {
         buttonNuevaPartida.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MenuActivity.this, NuevaPartidaActivity.class));
+                Intent intent = new Intent(MenuActivity.this, NuevaPartidaActivity.class);
+                intent.putExtra("imagenCambiada",imagenCambiada);
+                startActivity(intent);
             }
         });
         // Listener del boton para continuar partida
