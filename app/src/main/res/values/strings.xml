@@ -12,5 +12,9 @@
     <string name="button_continue">CONTINUE GAME</string>
     <string name="button_setting">SETTINGS</string>
     <string name="button_profile">PROFILE</string>
+    <string name="singleplayer">SINGLEPLAYER</string>
+    <string name="s_multiplayer">MULTIPLAYER</string>
+    <string name="un_jugador">UN JUGADOR</string>
+    <string name="multijugador">MULTIJUGADOR</string>
 
 </resources>
