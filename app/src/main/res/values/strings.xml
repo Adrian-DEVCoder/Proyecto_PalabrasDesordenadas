@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Proyecto_PalabrasDesordenadas</string>
+    <string name="app_name">Word Chaos</string>
     <string name="iniciar_sesi_n">Iniciar Sesión</string>
     <string name="logo_app">Logo app</string>
     <!--Strings para el menu principal en español-->
