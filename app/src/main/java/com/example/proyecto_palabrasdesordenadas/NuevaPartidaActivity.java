@@ -34,21 +34,27 @@ public class NuevaPartidaActivity extends AppCompatActivity {
         imageViewLogo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(NuevaPartidaActivity.this, MenuActivity.class));
+                Intent intent = new Intent(NuevaPartidaActivity.this, MenuActivity.class);
+                intent.putExtra("imagenCambiada",imagenCambiada);
+                startActivity(intent);
             }
         });
         // Listener para el boton de un jugador
         buttonUnJugador.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(NuevaPartidaActivity.this, PartidaActivity.class));
+                Intent intent = new Intent(NuevaPartidaActivity.this, PartidaActivity.class);
+                intent.putExtra("imagenCambiada",imagenCambiada);
+                startActivity(intent);
             }
         });
         // Listener para el boton de multijugador
         buttonMultijugador.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(NuevaPartidaActivity.this, MultijugadorActivity.class));
+                Intent intent = new Intent(NuevaPartidaActivity.this, MultijugadorActivity.class);
+                intent.putExtra("imagenCambiada",imagenCambiada);
+                startActivity(intent);
             }
         });
     }
