@@ -116,12 +116,17 @@ public class PartidaActivity extends AppCompatActivity {
         buttonComenzar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(PartidaActivity.this, JuegoActivity.class);
-                intent.putExtra("imagenCambiada", imagenCambiada);
-                intent.putExtra("dificultadSeleccionada", dificultadSeleccionada);
-                intent.putExtra("modoContrarreloj",buttonContrarrelojClickado);
-                intent.putExtra("modoPuntuacion", buttonPuntuacionClickado);
-                startActivity(intent);
+                if(!buttonContrarrelojClickado && !buttonPuntuacionClickado){
+                    Toast.makeText(PartidaActivity.this, "Selecciona un modo de juego.", Toast.LENGTH_SHORT).show();
+                } else {
+                    Intent intent = new Intent(PartidaActivity.this, JuegoActivity.class);
+                    intent.putExtra("imagenCambiada", imagenCambiada);
+                    intent.putExtra("dificultadSeleccionada", dificultadSeleccionada);
+                    intent.putExtra("modoContrarreloj",buttonContrarrelojClickado);
+                    intent.putExtra("modoPuntuacion", buttonPuntuacionClickado);
+                    startActivity(intent);
+                }
+
             }
         });
     }
