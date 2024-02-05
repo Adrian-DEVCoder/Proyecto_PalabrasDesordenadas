@@ -126,7 +126,6 @@ public class PartidaActivity extends AppCompatActivity {
                     intent.putExtra("modoPuntuacion", buttonPuntuacionClickado);
                     startActivity(intent);
                 }
-
             }
         });
     }
