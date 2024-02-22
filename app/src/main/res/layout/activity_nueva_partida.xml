@@ -4,67 +4,74 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".NuevaPartida">
-<!--
-comentadme  aqui lo que tengo que añadir quitar modificar etc por ejmplo mas o menos botones como llamarlos etc
--->
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="172dp"
-        android:layout_height="46dp"
-        android:text="MULTIJUGADOR"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.774"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.089" />
+    android:background="#9664EF"
+    tools:context=".NuevaPartidaActivity">
 
-    <Button
-        android:id="@+id/button"
+    <ImageView
+        android:id="@+id/img_logo_nueva"
         android:layout_width="150dp"
-        android:layout_height="48dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="56dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logochaos" />
+
+    <ImageButton
+        android:id="@+id/btn_singleplayer"
+        android:layout_width="105dp"
+        android:layout_height="105dp"
+        android:layout_marginTop="88dp"
+        android:backgroundTint="#673AB7"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/img_logo_nueva"
+        app:srcCompat="@drawable/singleplayer" />
+
+    <ImageButton
+        android:id="@+id/btn_multiplayer"
+        android:layout_width="115dp"
+        android:layout_height="105dp"
+        android:layout_marginTop="60dp"
+        android:backgroundTint="#673AB7"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_singleplayer"
+        app:srcCompat="@drawable/multiplayer" />
+
+    <TextView
+        android:id="@+id/tv_singleplayer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:background="#673AB7"
+        android:backgroundTint="#673AB7"
+        android:fontFamily="@font/montserrat_medium"
         android:text="UN JUGADOR"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.075"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.09" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_singleplayer" />
 
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="198dp"
-        android:layout_height="44dp"
-        android:text="Por vidas"
+    <TextView
+        android:id="@+id/tv_multiplayer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#673AB7"
+        android:backgroundTint="#673AB7"
+        android:fontFamily="@font/montserrat_medium"
+        android:text="MULTIJUGADOR"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.441"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.251" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_multiplayer"
+        app:layout_constraintVertical_bias="0.023" />
 
-    <Button
-        android:id="@+id/button4"
-        android:layout_width="198dp"
-        android:layout_height="44dp"
-        android:text="Contrarreloj"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.441"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.346" />
-
-    <Button
-        android:id="@+id/button5"
-        android:layout_width="198dp"
-        android:layout_height="44dp"
-        android:text="ETC"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.441"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.438" />
 </androidx.constraintlayout.widget.ConstraintLayout>

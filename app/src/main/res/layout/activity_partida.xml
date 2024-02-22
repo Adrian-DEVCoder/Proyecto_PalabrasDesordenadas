@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#9664EF"
+    tools:context=".PartidaActivity">
+
+    <ImageView
+        android:id="@+id/img_logo_partida"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="64dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logochaos" />
+
+    <Button
+        android:id="@+id/btn_dificultad"
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="104dp"
+        android:layout_marginEnd="64dp"
+        android:backgroundTint="#673AB7"
+        android:fontFamily="@font/montserrat_medium"
+        android:text="FÁCIL"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/img_logo_partida" />
+
+    <TextView
+        android:id="@+id/tv_dificultad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="120dp"
+        android:fontFamily="@font/montserrat_medium"
+        android:text="DIFICULTAD:"
+        android:textColor="#000000"
+        app:layout_constraintEnd_toStartOf="@+id/btn_dificultad"
+        app:layout_constraintHorizontal_bias="0.173"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/img_logo_partida" />
+
+    <Button
+        android:id="@+id/btn_contrarreloj"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:backgroundTint="#673AB7"
+        android:fontFamily="@font/montserrat_medium"
+        android:text="MODO CONTRARRELOJ"
+        app:icon="@drawable/contrarreloj"
+        app:iconTint="#000000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_dificultad" />
+
+    <Button
+        android:id="@+id/btn_puntuacion"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:backgroundTint="#673AB7"
+        android:fontFamily="@font/montserrat_medium"
+        android:text="MODO PUNTUACIÓN"
+        app:icon="@drawable/puntuacion"
+        app:iconTint="#000000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_contrarreloj" />
+
+    <Button
+        android:id="@+id/btn_comenzar"
+        android:layout_width="250dp"
+        android:layout_height="75dp"
+        android:layout_marginBottom="68dp"
+        android:backgroundTint="#673AB7"
+        android:fontFamily="@font/montserrat_medium"
+        android:text="COMENZAR PARTIDA"
+        app:icon="@drawable/play"
+        app:iconTint="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_puntuacion"
+        app:layout_constraintVertical_bias="0.81" />
+</androidx.constraintlayout.widget.ConstraintLayout>
