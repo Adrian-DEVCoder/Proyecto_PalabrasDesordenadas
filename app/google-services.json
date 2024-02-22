@@ -12,7 +12,20 @@
           "package_name": "com.example.proyecto_palabrasdesordenadas"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "747561012904-a8v1o3aauqsr1snsca5165llokpo6u18.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.proyecto_palabrasdesordenadas",
+            "certificate_hash": "d19cee473c94744a410d4e6729df591d4346fb57"
+          }
+        },
+        {
+          "client_id": "747561012904-utmhdbk5frjnejoe0ja389pmub2l9f3q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyC0FPb0koYQbQislVjQqj8BbAKT0AJSpYg"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "747561012904-utmhdbk5frjnejoe0ja389pmub2l9f3q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
