@@ -29,7 +29,7 @@ public class DBHandler extends SQLiteOpenHelper {
         super(context,DB_NAME,null,DB_VERSION);
         this.context = context;
     }
-
+    // Metodo para crear la base de datos
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         String query = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + "("
@@ -63,22 +63,37 @@ public class DBHandler extends SQLiteOpenHelper {
             e.printStackTrace();
         }
     }
-
-    public String generarPalabraAleatoria() {
+    // Metodo para generar palabras aleatorias, en español o ingles dependiendo del idioma seleccionado
+    public String generarPalabraAleatoria(boolean imagenCambiada) {
         SQLiteDatabase db = this.getReadableDatabase();
-        int numeroAleatorio = new Random().nextInt(200) +  1;
+        int numeroAleatorio = new Random().nextInt(200) + 1;
         String sNumero = String.valueOf(numeroAleatorio);
         Cursor cursor = null;
         String palabraGenerada = null;
         try {
-            cursor = db.rawQuery("SELECT " + SPANISH_WORD_COL + " FROM " + TABLE_NAME + " WHERE " + ID_COL + " = ?", new String[]{sNumero});
+            if (!imagenCambiada) {
+                cursor = db.rawQuery("SELECT " + SPANISH_WORD_COL + " FROM " + TABLE_NAME + " WHERE " + ID_COL + " = ?", new String[]{sNumero});
+            } else {
+                cursor = db.rawQuery("SELECT " + ENGLISH_WORD_COL + " FROM " + TABLE_NAME + " WHERE " + ID_COL + " = ?", new String[]{sNumero});
+            }
             if (cursor.moveToFirst()) {
                 palabraGenerada = cursor.getString(0);
             } else {
-                System.out.println("Error al obtener la palabra de la base de datos. ID: "+palabraGenerada);
+                if (!imagenCambiada) {
+                    System.out.println("Error al obtener la palabra de la base de datos en español. ID: " + sNumero);
+                } else {
+                    System.out.println("Error al obtener la palabra en inglés de la base de datos. ID: " + sNumero);
+                }
             }
         } catch (SQLiteException e) {
             e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            if (db != null && db.isOpen()) {
+                db.close();
+            }
         }
         return palabraGenerada;
     }

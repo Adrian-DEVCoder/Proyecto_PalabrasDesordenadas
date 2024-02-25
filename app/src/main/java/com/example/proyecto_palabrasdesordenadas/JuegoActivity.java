@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
 
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -30,7 +29,6 @@ public class JuegoActivity extends AppCompatActivity {
     private int contador = 0;
     private int puntuacion = 0;
     private CountDownTimer countDownTimer;
-    private SQLiteDatabase database;
     private String palabraOriginal = "";
     DBHandler dbHandler;
 
@@ -49,6 +47,13 @@ public class JuegoActivity extends AppCompatActivity {
         // Declaracion y asignacion de variables
         Button buttonComprobar = findViewById(R.id.btn_comprobar);
         Button buttonBorrar = findViewById(R.id.btn_borrar);
+        if(!imagenCambiada){
+            buttonComprobar.setText(R.string.comprobar);
+            buttonBorrar.setText(R.string.boton_borrar);
+        } else {
+            buttonComprobar.setText(R.string.button_check);
+            buttonBorrar.setText(R.string.button_delete);
+        }
         TextView textViewTimerScore = findViewById(R.id.tv_timerscore);
         ImageView imageViewVida1 = findViewById(R.id.img_vida);
         ImageView imageViewVida2 = findViewById(R.id.img_vida2);
@@ -71,36 +76,40 @@ public class JuegoActivity extends AppCompatActivity {
             imageViewVida3.setVisibility(View.VISIBLE);
             textViewPuntuacion.setVisibility(View.GONE);
             textViewScore.setVisibility(View.GONE);
-            iniciarTemporizador();
+            iniciarTemporizador(imagenCambiada);
         } else if (modoPuntuacion) {
             // Modo Puntuación: Mostramos la puntuación y las vidas, ocultamos el temporizador
             textViewPuntuacion.setVisibility(View.VISIBLE);
             imageViewVida1.setVisibility(View.VISIBLE);
             imageViewVida2.setVisibility(View.VISIBLE);
             imageViewVida3.setVisibility(View.VISIBLE);
-            textViewTimerScore.setVisibility(View.GONE); // Ocultamos el temporizador
+            textViewTimerScore.setVisibility(View.GONE);
             textViewCounter.setVisibility(View.GONE);
         }
         switch (dificultadSeleccionada) {
+            case "EASY":
             case "FÁCIL":
                 do {
-                    palabraOriginal = dbHandler.generarPalabraAleatoria();
+                    palabraOriginal = dbHandler.generarPalabraAleatoria(imagenCambiada);
                 } while (palabraOriginal == null || palabraOriginal.length() < 3 || palabraOriginal.length() > 4);
                 break;
+            case "NORMAL":
             case "MEDIA":
                 do {
-                    palabraOriginal = dbHandler.generarPalabraAleatoria();
+                    palabraOriginal = dbHandler.generarPalabraAleatoria(imagenCambiada);
                 } while (palabraOriginal == null || palabraOriginal.length() < 5 || palabraOriginal.length() > 8);
                 break;
+            case "HARD":
             case "DIFÍCIL":
                 do {
-                    palabraOriginal = dbHandler.generarPalabraAleatoria();
+                    palabraOriginal = dbHandler.generarPalabraAleatoria(imagenCambiada);
                 } while (palabraOriginal == null || palabraOriginal.length() < 9);
                 break;
         }
         String palabraDesordenada = desordenarPalabra(palabraOriginal);
         textViewPalabra.setText(palabraDesordenada);
         crearTeclado(gridTeclado, editTextPalabraUsuario);
+        // Accion del boton de comprobar
         buttonComprobar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -108,12 +117,16 @@ public class JuegoActivity extends AppCompatActivity {
                 String palabraMostrada = textViewPalabra.getText().toString().trim().toLowerCase();
                 if (!palabraUsuario.isEmpty() && palabraUsuario.length() == palabraMostrada.length()) {
                     if (palabraUsuario.equals(palabraOriginal.toLowerCase())) {
-                        Toast.makeText(JuegoActivity.this,"Has acertado!",Toast.LENGTH_SHORT).show();
+                        if(!imagenCambiada){
+                            Toast.makeText(JuegoActivity.this,"Has acertado!",Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(JuegoActivity.this,"You're right!",Toast.LENGTH_SHORT).show();
+                        }
                         contador++;
                         textViewCounter.setText(String.valueOf(contador));
                         String nuevaPalabra;
                         do {
-                            nuevaPalabra = dbHandler.generarPalabraAleatoria();
+                            nuevaPalabra = dbHandler.generarPalabraAleatoria(imagenCambiada);
                         } while (!verificarLongitudPalabra(nuevaPalabra, dificultadSeleccionada));
                         palabraOriginal = nuevaPalabra;
                         String nuevaPalabraDesordenada = desordenarPalabra(nuevaPalabra);
@@ -124,7 +137,11 @@ public class JuegoActivity extends AppCompatActivity {
                         puntuacion += puntuacionAleatoria;
                         textViewScore.setText(String.valueOf(puntuacion));
                     } else {
-                        Toast.makeText(JuegoActivity.this,"Has fallado!",Toast.LENGTH_SHORT).show();
+                        if(!imagenCambiada){
+                            Toast.makeText(JuegoActivity.this,"Has fallado!",Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(JuegoActivity.this,"You failed!",Toast.LENGTH_SHORT).show();
+                        }
                         vidasRestantes--;
                         switch (vidasRestantes){
                             case 2:
@@ -136,7 +153,11 @@ public class JuegoActivity extends AppCompatActivity {
                             case 0:
                                 imageViewVida3.setImageResource(R.drawable.nlife);
                                 countDownTimer.cancel();
-                                Toast.makeText(JuegoActivity.this, "Se agotaron las vidas del juego. Juego Terminado.",Toast.LENGTH_SHORT).show();
+                                if(!imagenCambiada){
+                                    Toast.makeText(JuegoActivity.this,"Se agotaron las vidas del juego. Juego Terminado.",Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(JuegoActivity.this,"The game lives have run out. Game Over.",Toast.LENGTH_SHORT).show();
+                                }
                                 finish();
                                 break;
                             default:
@@ -146,6 +167,7 @@ public class JuegoActivity extends AppCompatActivity {
                 }
             }
         });
+        // Accion del boton de borrar
         buttonBorrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -153,8 +175,8 @@ public class JuegoActivity extends AppCompatActivity {
             }
         });
     }
-
-    private void iniciarTemporizador() {
+    // Metodo para iniciar el temporizador, en el modo contrarreloj
+    private void iniciarTemporizador(boolean imagenCambiada) {
         TextView textViewTimer = findViewById(R.id.tv_timerscore);
         countDownTimer = new CountDownTimer(90000, 1000) {
             @Override
@@ -164,17 +186,21 @@ public class JuegoActivity extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-                textViewTimer.setText("Tiempo agotado!!");
-                terminarJuego();
+                if(!imagenCambiada){
+                    textViewTimer.setText("Tiempo agotado!!");
+                } else {
+                    textViewTimer.setText("Time out!!");
+                }
+                terminarJuego(imagenCambiada);
             }
         };
-        textViewTimer.setTextSize(32); // Tamaño del texto
-        textViewTimer.setTextColor(Color.RED); // Color del texto
-        Typeface customTypeface = ResourcesCompat.getFont(this, R.font.montserrat_bold); // Fuente personalizada
+        textViewTimer.setTextSize(32);
+        textViewTimer.setTextColor(Color.RED);
+        Typeface customTypeface = ResourcesCompat.getFont(this, R.font.montserrat_bold);
         textViewTimer.setTypeface(customTypeface);
         countDownTimer.start();
     }
-
+    // Metodo para verificar la longitud de la palabra
     private boolean verificarLongitudPalabra(String palabra, String dificultad) {
         switch (dificultad) {
             case "FÁCIL":
@@ -184,16 +210,20 @@ public class JuegoActivity extends AppCompatActivity {
             case "DÍFICIL":
                 return palabra.length() >= 9;
             default:
-                return false; // O manejar el caso por defecto según lo que necesites
+                return false;
         }
     }
-
-    private void terminarJuego() {
+    // Metodo para terminar el juego
+    private void terminarJuego(boolean imagenCambiada) {
         countDownTimer.cancel();
-        Toast.makeText(this, "Se agotaron las vidas. Juego terminado.", Toast.LENGTH_SHORT).show();
+        if(!imagenCambiada){
+            Toast.makeText(JuegoActivity.this,"Se agotaron las vidas del juego. Juego Terminado.",Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(JuegoActivity.this,"The game lives have run out. Game Over.",Toast.LENGTH_SHORT).show();
+        }
         finish();
     }
-
+    // Metodo para desordenar las palabras
     public String desordenarPalabra(String palabra){
         char[] letras = palabra.toCharArray();
         Random random = new Random();
@@ -222,7 +252,7 @@ public class JuegoActivity extends AppCompatActivity {
         ScaleAnimation scaleAnimation = new ScaleAnimation(1.0f, 0.9f, 1.0f, 0.9f,
                 Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
         scaleAnimation.setDuration(100); // Duración de la animación en milisegundos
-        // Añadir los botones a la vista
+        // Añadimos los botones a la vista
         for (int i = 0; i < letras.length; i++) {
             for (int j = 0; j < letras[i].length; j++) {
                 Button button = new Button(this);
@@ -242,17 +272,13 @@ public class JuegoActivity extends AppCompatActivity {
                 GridLayout.LayoutParams params = new GridLayout.LayoutParams();
                 params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
                 params.width = anchoBoton;
-                params.setMargins(8, 8, 8, 8);  // Ajusta el margen según tus preferencias
+                params.setMargins(8, 8, 8, 8);  // Ajustamos el margen
                 button.setLayoutParams(params);
-                button.setTextSize(22); // Puedes ajustar el tamaño del texto aquí
+                button.setTextSize(22);
 
                 // Establecemos el fondo del botón con el drawable personalizado
                 button.setBackgroundResource(R.drawable.boton_personalizado);
-
-                // Color del texto (amarillo/dorado)
                 button.setTextColor(Color.parseColor("#CDA434"));
-
-                // Agregamos la animación de escala al botón
                 button.setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View view, MotionEvent motionEvent) {

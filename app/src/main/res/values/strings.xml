@@ -16,5 +16,9 @@
     <string name="s_multiplayer">MULTIPLAYER</string>
     <string name="un_jugador">UN JUGADOR</string>
     <string name="multijugador">MULTIJUGADOR</string>
+    <string name="comprobar">COMPROBAR</string>
+    <string name="boton_borrar">BORRAR</string>
+    <string name="button_check">CHECK</string>
+    <string name="button_delete">DELETE</string>
 
 </resources>
