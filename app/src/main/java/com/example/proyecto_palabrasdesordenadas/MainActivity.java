@@ -32,12 +32,18 @@ import com.google.firebase.auth.GoogleAuthProvider;
 public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth autorizacion;
+    private SoundManager soundManager;
+    public static int sonido;
+    public static float volson = 100f;
+    public static int progSound = 100;
+    public static int progMusic = 100;
     private static final int RC_SIGN_IN = 9001;
     private GoogleSignInClient mGoogleSignInClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        sonido = 1;
         setContentView(R.layout.activity_main);
         autorizacion = FirebaseAuth.getInstance();
         EditText editTextCorreo = findViewById(R.id.et_contrasena);
@@ -52,10 +58,16 @@ public class MainActivity extends AppCompatActivity {
         TextView textViewContrasena = findViewById(R.id.tv_contrasena);
         ImageView imageViewFondo = findViewById(R.id.img_fondo);
         ImageView imageViewLogo = findViewById(R.id.img_logo);
+        soundManager = new SoundManager();
+        soundManager.setVolume(volson);
         getWindow().setStatusBarColor(getResources().getColor(R.color.azuloscuro, this.getTheme()));
+        Intent intent = new Intent(this, BackgroundSoundService.class);
+        intent.putExtra("song_selection",1 );
+        startService(intent);
         buttonIniciarSesion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                soundManager.playSound(MainActivity.this, sonido);
                 String correo = editTextCorreo.getText().toString().trim();
                 String contrasena = editTextContrasena.getText().toString().trim();
                 if(!correo.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(correo).matches()){
@@ -86,24 +98,24 @@ public class MainActivity extends AppCompatActivity {
         buttonRegistrarse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                soundManager.playSound(MainActivity.this, sonido);
                 startActivity(new Intent(MainActivity.this, RegistroActivity.class));
             }
         });
-        // Configurar el botón de inicio de sesión con Google
+
         ibuttonGoogle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                soundManager.playSound(MainActivity.this, sonido);
                 signInWithGoogle();
             }
         });
-        // Configurar Google Sign In
+
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
-        // mGoogleSignInClient = Auth.GoogleSignInApi.getClient(this, gso);
 
         findViewById(R.id.btn_google).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,8 +133,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
 
@@ -146,13 +156,11 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = autorizacion.getCurrentUser();
                             Toast.makeText(MainActivity.this, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(MainActivity.this, MenuActivity.class));
                             finish();
                         } else {
-                            // If sign in fails, display a message to the user.
                             Toast.makeText(MainActivity.this, "Inicio de sesión fallido: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }

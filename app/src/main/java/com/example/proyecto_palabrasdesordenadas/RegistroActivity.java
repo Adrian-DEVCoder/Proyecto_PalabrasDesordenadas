@@ -18,7 +18,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class RegistroActivity extends AppCompatActivity {
-
+    private SoundManager soundManager;
     private FirebaseAuth autorizacion;
 
     @Override
@@ -38,12 +38,15 @@ public class RegistroActivity extends AppCompatActivity {
         TextView textViewContrasena = findViewById(R.id.tv_contrasena);
         TextView textViewRegistro = findViewById(R.id.tv_registro);
         TextView textViewIniciar = findViewById(R.id.tv_iniciarsesion);
+        soundManager = new SoundManager();
+        soundManager.setVolume(MainActivity.volson);
         // Modificamos el color de la barra de estado
         getWindow().setStatusBarColor(getResources().getColor(R.color.azuloscuro,this.getTheme()));
         // Listener del boton para realizar el registro
         buttonRegistro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                soundManager.playSound(RegistroActivity.this, MainActivity.sonido);
                 String nombre = editTextNombre.getText().toString().trim();
                 String correo = editTextCorreo.getText().toString().trim();
                 String contrasena = editTextContrasena.getText().toString().trim();
@@ -72,6 +75,7 @@ public class RegistroActivity extends AppCompatActivity {
         buttonIniciarSesion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                soundManager.playSound(RegistroActivity.this, MainActivity.sonido);
                 startActivity(new Intent(RegistroActivity.this, MainActivity.class));
             }
         });

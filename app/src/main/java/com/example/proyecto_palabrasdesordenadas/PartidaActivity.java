@@ -12,7 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class PartidaActivity extends AppCompatActivity {
-
+    private SoundManager soundManager;
     private boolean buttonContrarrelojClickado = false;
     private boolean buttonPuntuacionClickado = false;
     private String dificultadSeleccionada = "FÁCIL";
@@ -28,6 +28,8 @@ public class PartidaActivity extends AppCompatActivity {
         Button buttonContrarreloj = findViewById(R.id.btn_contrarreloj);
         Button buttonPuntuacion = findViewById(R.id.btn_puntuacion);
         Button buttonComenzar = findViewById(R.id.btn_comenzar);
+        soundManager = new SoundManager();
+        soundManager.setVolume(MainActivity.volson);
         if(imagenCambiada){
             textViewDificultad.setText("DIFFICULTY:");
             buttonDificultad.setText("EASY");
@@ -49,6 +51,7 @@ public class PartidaActivity extends AppCompatActivity {
         imageViewLogo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                soundManager.playSound(PartidaActivity.this, MainActivity.sonido);
                 Intent intent = new Intent(PartidaActivity.this, NuevaPartidaActivity.class);
                 intent.putExtra("imagenCambiada", imagenCambiada);
                 startActivity(intent);
@@ -60,7 +63,7 @@ public class PartidaActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String dificultadActual = buttonDificultad.getText().toString();
-
+                soundManager.playSound(PartidaActivity.this, MainActivity.sonido);
                 if(dificultadActual.equalsIgnoreCase("FÁCIL")){
                     buttonDificultad.setText("MEDIA");
                     dificultadSeleccionada = "MEDIA";
@@ -88,6 +91,7 @@ public class PartidaActivity extends AppCompatActivity {
         buttonContrarreloj.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                soundManager.playSound(PartidaActivity.this, MainActivity.sonido);
                 buttonContrarrelojClickado = !buttonContrarrelojClickado;
                 if(buttonContrarrelojClickado && !buttonPuntuacionClickado){
                     buttonContrarreloj.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
@@ -102,6 +106,7 @@ public class PartidaActivity extends AppCompatActivity {
         buttonPuntuacion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                soundManager.playSound(PartidaActivity.this, MainActivity.sonido);
                 buttonPuntuacionClickado = !buttonPuntuacionClickado;
                 if(buttonPuntuacionClickado && !buttonContrarrelojClickado){
                     buttonPuntuacion.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
@@ -116,6 +121,7 @@ public class PartidaActivity extends AppCompatActivity {
         buttonComenzar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                soundManager.playSound(PartidaActivity.this, MainActivity.sonido);
                 if(!buttonContrarrelojClickado && !buttonPuntuacionClickado){
                     Toast.makeText(PartidaActivity.this, "Selecciona un modo de juego.", Toast.LENGTH_SHORT).show();
                 } else {
