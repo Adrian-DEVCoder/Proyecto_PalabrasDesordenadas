@@ -20,5 +20,6 @@
     <string name="boton_borrar">BORRAR</string>
     <string name="button_check">CHECK</string>
     <string name="button_delete">DELETE</string>
+    <string name="default_web_client_id">747561012904-utmhdbk5frjnejoe0ja389pmub2l9f3q.apps.googleusercontent.com</string>
 
 </resources>
