@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth autorizacion;
     private SoundManager soundManager;
-    public static int sonido;
+    public static int sonido = 1;
     public static float volson = 100f;
     public static int progSound = 100;
     public static int progMusic = 100;
@@ -43,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sonido = 1;
         setContentView(R.layout.activity_main);
         autorizacion = FirebaseAuth.getInstance();
         EditText editTextCorreo = findViewById(R.id.et_contrasena);
@@ -57,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         TextView textViewCorreo = findViewById(R.id.tv_correo);
         TextView textViewContrasena = findViewById(R.id.tv_contrasena);
         ImageView imageViewFondo = findViewById(R.id.img_fondo);
-        ImageView imageViewLogo = findViewById(R.id.img_logo);
+        ImageView imageViewLogo = findViewById(R.id.img_logo2);
         soundManager = new SoundManager();
         soundManager.setVolume(volson);
         getWindow().setStatusBarColor(getResources().getColor(R.color.azuloscuro, this.getTheme()));

@@ -27,7 +27,7 @@ public class RegistroActivity extends AppCompatActivity {
         setContentView(R.layout.activity_registro);
         autorizacion = FirebaseAuth.getInstance();
         ImageView imageViewFondo = findViewById(R.id.img_fondo);
-        ImageView imageViewLogo = findViewById(R.id.img_logo);
+        ImageView imageViewLogo = findViewById(R.id.img_logo2);
         EditText editTextNombre = findViewById(R.id.et_nombre);
         EditText editTextCorreo = findViewById(R.id.et_correo);
         EditText editTextContrasena = findViewById(R.id.et_contrasena);

@@ -2,14 +2,12 @@ package com.example.proyecto_palabrasdesordenadas;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 public class MenuActivity extends AppCompatActivity {
     private SoundManager soundManager;
@@ -18,7 +16,7 @@ public class MenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
-        ImageView imageViewLogo = findViewById(R.id.img_logo);
+        ImageView imageViewLogo = findViewById(R.id.img_logo2);
         Button buttonNuevaPartida = findViewById(R.id.btn_nueva_partida);
         Button buttonContinuarPartida = findViewById(R.id.btn_continuar_partida);
         Button buttonConfiguracion = findViewById(R.id.btn_configuracion);

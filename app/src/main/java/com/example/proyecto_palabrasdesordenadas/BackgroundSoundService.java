@@ -51,7 +51,6 @@ public class BackgroundSoundService extends Service {
             throw new IllegalArgumentException("Invalid song selection");
         }
 
-        // Crear el MediaPlayer con la canción seleccionada
         mediaPlayer = MediaPlayer.create(getApplicationContext(), resId);
         mediaPlayer.setLooping(true);
         mediaPlayer.start();

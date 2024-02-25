@@ -24,7 +24,7 @@ import android.widget.Toast;
 import java.util.Random;
 
 public class JuegoActivity extends AppCompatActivity {
-
+    private SoundManager soundManager;
     private int vidasRestantes = 3;
     private int contador = 0;
     private int puntuacion = 0;
@@ -63,6 +63,8 @@ public class JuegoActivity extends AppCompatActivity {
         TextView textViewScore = findViewById(R.id.tv_score);
         TextView textViewPuntuacion = findViewById(R.id.tv_puntuacion);
         EditText editTextPalabraUsuario = findViewById(R.id.et_palabrausuario);
+        soundManager = new SoundManager();
+        soundManager.setVolume(MainActivity.volson);
         editTextPalabraUsuario.setEnabled(false);
         editTextPalabraUsuario.setFocusable(false);
         editTextPalabraUsuario.setFocusableInTouchMode(false);
@@ -262,6 +264,7 @@ public class JuegoActivity extends AppCompatActivity {
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        soundManager.playSound(JuegoActivity.this, MainActivity.sonido);
                         Button buttonClickado = (Button) view;
                         String letraSeleccionada = buttonClickado.getText().toString();
                         editTextPalabra.setText(editTextPalabra.getText() + letraSeleccionada);
