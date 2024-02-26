@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Proyecto_PalabrasDesordenadas"
-        tools:targetApi="31">
+        android:enableOnBackInvokedCallback="true"
+        tools:targetApi="tiramisu">
         <service android:name=".BackgroundSoundService" />
         <activity
             android:name=".JuegoActivity"
@@ -22,7 +23,8 @@
             android:exported="false" />
         <activity
             android:name=".PerfilActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:configChanges="orientation|screenSize|keyboardHidden"/>
         <activity
             android:name=".ConfiguracionActivity"
             android:exported="false" />
