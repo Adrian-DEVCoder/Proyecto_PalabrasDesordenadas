@@ -2,12 +2,12 @@ package com.example.proyecto_palabrasdesordenadas;
 
 public class Trofeo {
     private String titulo;
-    private String objeto3DId;
+    private String recurso;
     private String descripcion;
 
-    public Trofeo(String titulo, String objeto3DId, String descripcion) {
+    public Trofeo(String titulo, String recurso, String descripcion) {
         this.titulo = titulo;
-        this.objeto3DId = objeto3DId;
+        this.recurso = recurso;
         this.descripcion = descripcion;
     }
 
@@ -15,8 +15,8 @@ public class Trofeo {
         return titulo;
     }
 
-    public String getObjeto3DId() {
-        return objeto3DId;
+    public String getRecurso() {
+        return recurso;
     }
 
     public String getDescripcion() {

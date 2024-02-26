@@ -14,11 +14,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "747561012904-a8v1o3aauqsr1snsca5165llokpo6u18.apps.googleusercontent.com",
+          "client_id": "747561012904-2fg145bf1rhaci8sqlp0eanbcg4bairc.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.proyecto_palabrasdesordenadas",
-            "certificate_hash": "d19cee473c94744a410d4e6729df591d4346fb57"
+            "certificate_hash": "3819b7433569278108906f5891c0c5d4df633ea7"
           }
         },
         {

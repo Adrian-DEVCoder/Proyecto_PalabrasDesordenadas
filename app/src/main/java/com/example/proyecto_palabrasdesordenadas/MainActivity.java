@@ -1,10 +1,13 @@
 package com.example.proyecto_palabrasdesordenadas;
 
+import static androidx.constraintlayout.widget.StateSet.TAG;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -28,6 +31,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -156,12 +164,36 @@ public class MainActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             FirebaseUser user = autorizacion.getCurrentUser();
+                            crearDocumentoUsuarioGoogle(user);
                             Toast.makeText(MainActivity.this, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(MainActivity.this, MenuActivity.class));
                             finish();
                         } else {
                             Toast.makeText(MainActivity.this, "Inicio de sesión fallido: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
+                    }
+                });
+    }
+
+    private void crearDocumentoUsuarioGoogle(FirebaseUser user){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Map<String, Object> datosUsuario = new HashMap<>();
+        datosUsuario.put("nombre", user.getDisplayName());
+        datosUsuario.put("email", user.getEmail());
+        datosUsuario.put("trofeos", new ArrayList<>());
+
+        db.collection("usuarios").document(user.getUid())
+                .set(datosUsuario)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Log.d(TAG, "Documento guardado correctamente!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error al guardar el documento.");
                     }
                 });
     }
