@@ -7,15 +7,15 @@
     android:background="#9664EF"
     tools:context=".PerfilActivity">
 
-    <TextView
-        android:id="@+id/tv_logros"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="92dp"
-        android:text="LOGROS"
-        android:textColor="#000000"
-        android:textSize="34sp"
-        android:textStyle="bold"
+    <ImageView
+        android:id="@+id/img_logo2"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="72dp"
+        android:background="@drawable/borde_redondo"
+        android:contentDescription="Logo de Chaos"
+        android:scaleType="centerCrop"
+        android:src="@drawable/logochaos"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
@@ -28,7 +28,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_logros">
+        app:layout_constraintTop_toBottomOf="@+id/img_logo2">
 
         <LinearLayout
             android:layout_width="match_parent"

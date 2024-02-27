@@ -27,6 +27,10 @@ public class SoundManager {
                 return SoundEffect.POP.getResId();
             case 4:
                 return SoundEffect.EXPLOSION.getResId();
+            case 5:
+                return SoundEffect.CORRECT.getResId();
+            case 6:
+                return SoundEffect.NEGATIVE.getResId();
             default:
                 throw new IllegalArgumentException("Indice del recurso seleccionado invalido.");
         }

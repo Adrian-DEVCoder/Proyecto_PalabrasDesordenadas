@@ -4,7 +4,9 @@ public enum SoundEffect {
     CLICK(R.raw.mech),
     BONK(R.raw.bonk),
     POP(R.raw.pop),
-    EXPLOSION(R.raw.explosion);
+    EXPLOSION(R.raw.explosion),
+    CORRECT(R.raw.correct),
+    NEGATIVE(R.raw.negative);
 
     private int resId;
 

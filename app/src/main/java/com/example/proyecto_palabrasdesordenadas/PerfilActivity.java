@@ -24,15 +24,18 @@ import java.util.List;
 import java.util.Map;
 
 public class PerfilActivity extends AppCompatActivity {
-
+    private SoundManager soundManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perfil);
-        TextView textViewLogros = findViewById(R.id.tv_logros);
-        textViewLogros.setOnClickListener(new View.OnClickListener() {
+        ImageView imageViewLogo = findViewById(R.id.img_logo2);
+        soundManager = new SoundManager();
+        soundManager.setVolume(MainActivity.volson);
+        imageViewLogo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                soundManager.playSound(PerfilActivity.this, MainActivity.sonido);
                 startActivity(new Intent(PerfilActivity.this, MenuActivity.class));
             }
         });

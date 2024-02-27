@@ -41,6 +41,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -148,6 +149,7 @@ public class JuegoActivity extends AppCompatActivity {
                 String palabraMostrada = textViewPalabra.getText().toString().trim().toLowerCase();
                 if (!palabraUsuario.isEmpty() && palabraUsuario.length() == palabraMostrada.length()) {
                     if (palabraUsuario.equals(palabraOriginal.toLowerCase())) {
+                        soundManager.playSound(JuegoActivity.this,5);
                         if(!imagenCambiada){
                             Toast.makeText(JuegoActivity.this,"Has acertado!",Toast.LENGTH_SHORT).show();
                         } else {
@@ -171,6 +173,7 @@ public class JuegoActivity extends AppCompatActivity {
                         textViewPalabra.setText(nuevaPalabraDesordenada);
                         editTextPalabraUsuario.setText("");
                     } else {
+                        soundManager.playSound(JuegoActivity.this,6);
                         if(!imagenCambiada){
                             Toast.makeText(JuegoActivity.this,"Has fallado!",Toast.LENGTH_SHORT).show();
                         } else {
@@ -413,20 +416,22 @@ public class JuegoActivity extends AppCompatActivity {
                     if(document.exists()){
                         List<Map<String, Object>> partidas = (List<Map<String, Object>>) document.get("partidas");
                         if(partidas != null){
-                            Calendar cal = Calendar.getInstance();
-                            cal.add(Calendar.MONTH, -1);
-                            Date mesAtras = cal.getTime();
-                            List<Map<String, Object>> partidasUltimoMes = partidas.stream()
-                                    .filter(partida -> {
-                                        // Convertir Timestamp a Date
-                                        Timestamp timestamp = (Timestamp) partida.get("fechaPartida");
-                                        Date fechaPartida = timestamp.toDate();
-                                        return fechaPartida.after(mesAtras);
-                                    })
-                                    .collect(Collectors.toList());
-                            boolean sieteDias = partidasUltimoMes.size() >=  7;
-                            if(sieteDias){
-                                mostrarToast("!Has ganado el trofeo por jugar durante  7 dias consecutivos¡");
+                            // Ordenar las partidas por fecha en orden ascendente
+                            partidas.sort(Comparator.comparing(partida -> ((Timestamp) partida.get("fechaPartida")).toDate()));
+
+                            // Verificar si el usuario ha jugado partidas durante  7 días seguidos
+                            boolean jugado7DiasSeguidos = verificarJugado7DiasSeguidos(partidas);
+
+                            if (jugado7DiasSeguidos) {
+                                // Aquí puedes otorgar el trofeo al usuario
+                                ganarTrofeo(usuarioId, "linguisticoIntrepido").addOnCompleteListener(new OnCompleteListener<Boolean>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Boolean> task) {
+                                        if (task.isSuccessful() && task.getResult()) {
+                                            mostrarToast("¡Has ganado el trofeo Linguistico Intrepido!");
+                                        }
+                                    }
+                                });
                             }
                         }
                     } else {
@@ -437,6 +442,31 @@ public class JuegoActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private boolean verificarJugado7DiasSeguidos(List<Map<String, Object>> partidas) {
+        if (partidas.size() <  7) {
+            return false; // No hay suficientes partidas para verificar  7 días seguidos
+        }
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(((Timestamp) partidas.get(0).get("fechaPartida")).toDate());
+        int diasJugados =  0;
+
+        for (int i =  1; i < partidas.size(); i++) {
+            Date fechaPartida = ((Timestamp) partidas.get(i).get("fechaPartida")).toDate();
+            cal.add(Calendar.DAY_OF_MONTH,  1); // Avanzar un día
+            if (cal.getTime().equals(fechaPartida)) {
+                diasJugados++;
+                if (diasJugados ==  7) {
+                    return true; // Se han jugado  7 días seguidos
+                }
+            } else {
+                diasJugados =  0; // Reiniciar el conteo de días jugados
+            }
+        }
+
+        return false; // No se han jugado  7 días seguidos
     }
 
     // Metodo para verificar el trofeo Luchador de Letras
@@ -476,8 +506,14 @@ public class JuegoActivity extends AppCompatActivity {
                                     .anyMatch(palabraFormada -> ((String) palabraFormada.get("palabra")).length() >=  9);
 
                             if (calificaParaTrofeo) {
-                                // Aquí puedes otorgar el trofeo al usuario
-                                mostrarToast("¡Has ganado el trofeo Luchador de Letras!");
+                                ganarTrofeo(usuarioId, "luchadorDeLetras").addOnCompleteListener(new OnCompleteListener<Boolean>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Boolean> task) {
+                                        if (task.isSuccessful() && task.getResult()) {
+                                            mostrarToast("¡Has ganado el trofeo Luchador de Letras!");
+                                        }
+                                    }
+                                });
                             }
                         }
                     } else {
@@ -510,7 +546,14 @@ public class JuegoActivity extends AppCompatActivity {
                                         }
                                         boolean todosLosTrofeosConseguidos = trofeosGanados.containsAll(todosLosTrofeos);
                                         if(todosLosTrofeosConseguidos){
-                                            mostrarToast("!Has ganado el trofeo Maestro de la Palabra¡");
+                                            ganarTrofeo(usuarioId, "maestroDeLaPalabra").addOnCompleteListener(new OnCompleteListener<Boolean>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Boolean> task) {
+                                                    if (task.isSuccessful() && task.getResult()) {
+                                                        mostrarToast("!Has ganado el trofeo Maestro de la Palabra¡");
+                                                    }
+                                                }
+                                            });
                                         }
                                     } else {
                                         Log.d("TrofeoMaestroDeLaPalabra", "Error al obtener los trofeos disponibles", task.getException());
@@ -540,15 +583,26 @@ public class JuegoActivity extends AppCompatActivity {
                         if (partidas != null) {
                             // Filtrar partidas en modo contrarreloj sin fallos
                             List<Map<String, Object>> partidasContrarrelojSinFallos = partidas.stream()
-                                    .filter(partida -> "modoContrarreloj".equals(partida.get("modoDeJuego")) && (int) partida.get("fallos") ==  0)
+                                    .filter(partida -> {
+                                        Object modoDeJuego = partida.get("modoDeJuego");
+                                        Object fallos = partida.get("fallos");
+                                        // Asegúrate de que ambos objetos no sean null antes de realizar la comparación
+                                        return modoDeJuego != null && "modoContrarreloj".equals(modoDeJuego) && fallos != null && (int) fallos ==  0;
+                                    })
                                     .collect(Collectors.toList());
 
-                            // Verificar si el usuario ha completado 10 niveles contrarreloj sin fallar ninguna palabra
-                            boolean calificaParaTrofeo = partidasContrarrelojSinFallos.size() >=   10;
+                            // Verificar si el usuario ha completado  10 niveles contrarreloj sin fallar ninguna palabra
+                            boolean calificaParaTrofeo = partidasContrarrelojSinFallos.size() >=  10;
 
                             if (calificaParaTrofeo) {
-                                // Aquí puedes otorgar el trofeo Reloj Maestro al usuario
-                                mostrarToast("¡Has ganado el trofeo Reloj Maestro!");
+                                ganarTrofeo(usuarioId, "relojMaestro").addOnCompleteListener(new OnCompleteListener<Boolean>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Boolean> task) {
+                                        if (task.isSuccessful() && task.getResult()) {
+                                            mostrarToast("¡Has ganado el trofeo Reloj Maestro!");
+                                        }
+                                    }
+                                });
                             }
                         }
                     } else {
@@ -560,6 +614,7 @@ public class JuegoActivity extends AppCompatActivity {
             }
         });
     }
+
     // Metodo para verificar el trofeo Sprinter Verbal
     private void verificarTrofeoSprinterVerbal(String usuarioId) {
         DocumentReference usuarioRef = db.collection("usuarios").document(usuarioId);
@@ -571,17 +626,29 @@ public class JuegoActivity extends AppCompatActivity {
                     if (document.exists()) {
                         List<Map<String, Object>> partidas = (List<Map<String, Object>>) document.get("partidas");
                         if (partidas != null) {
-                            // Filtrar partidas en modo contrarreloj con puntuación de al menos  80
+                            // Filtrar partidas en modo contrarreloj con puntuación de al menos   80
                             List<Map<String, Object>> partidasContrarrelojConPuntuacionAlta = partidas.stream()
-                                    .filter(partida -> "modoContrarreloj".equals(partida.get("modoDeJuego")) && (int) partida.get("puntuacion") >=   80)
+                                    .filter(partida -> {
+                                        Object modoDeJuego = partida.get("modoDeJuego");
+                                        Object puntuacion = partida.get("puntuacion");
+                                        // Asegúrate de que ambos objetos no sean null antes de realizar la comparación
+                                        // Convierte puntuacion a Long y luego a int para la comparación
+                                        return modoDeJuego != null && "modoContrarreloj".equals(modoDeJuego) && puntuacion != null && ((Long) puntuacion).intValue() >=   80;
+                                    })
                                     .collect(Collectors.toList());
 
-                            // Verificar si el usuario ha alcanzado la puntuación de al menos  80 en un nivel contrarreloj
+                            // Verificar si el usuario ha alcanzado la puntuación de al menos   80 en un nivel contrarreloj
                             boolean calificaParaTrofeo = !partidasContrarrelojConPuntuacionAlta.isEmpty();
 
                             if (calificaParaTrofeo) {
-                                // Aquí puedes otorgar el trofeo Sprinter Verbal al usuario
-                                mostrarToast("¡Has ganado el trofeo Sprinter Verbal!");
+                                ganarTrofeo(usuarioId, "sprinterVerbal").addOnCompleteListener(new OnCompleteListener<Boolean>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Boolean> task) {
+                                        if (task.isSuccessful() && task.getResult()) {
+                                            mostrarToast("¡Has ganado el trofeo Sprinter Verbal!");
+                                        }
+                                    }
+                                });
                             }
                         }
                     } else {
@@ -613,8 +680,14 @@ public class JuegoActivity extends AppCompatActivity {
                             boolean calificaParaTrofeo = partidasModoPuntuacion.size() >=   10;
 
                             if (calificaParaTrofeo) {
-                                // Aquí puedes otorgar el trofeo Superviviente Linguístico al usuario
-                                mostrarToast("¡Has ganado el trofeo Superviviente Linguístico!");
+                                ganarTrofeo(usuarioId, "supervivienteLinguistico").addOnCompleteListener(new OnCompleteListener<Boolean>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Boolean> task) {
+                                        if (task.isSuccessful() && task.getResult()) {
+                                            mostrarToast("¡Has ganado el trofeo Superviviente Linguístico!");
+                                        }
+                                    }
+                                });
                             }
                         }
                     } else {
@@ -642,8 +715,14 @@ public class JuegoActivity extends AppCompatActivity {
                                     .anyMatch(palabraFormada -> ((String) palabraFormada.get("palabra")).length() >=  7);
 
                             if (calificaParaTrofeo) {
-                                // Aquí puedes otorgar el trofeo al usuario
-                                mostrarToast("¡Has ganado el trofeo Tornado de Letras!");
+                                ganarTrofeo(usuarioId, "tornadoDeLetras").addOnCompleteListener(new OnCompleteListener<Boolean>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Boolean> task) {
+                                        if (task.isSuccessful() && task.getResult()) {
+                                            mostrarToast("¡Has ganado el trofeo Tornado de Letras!");
+                                        }
+                                    }
+                                });
                             }
                         }
                     } else {
