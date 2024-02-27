@@ -4,12 +4,10 @@
     <string name="logo_app">Logo app</string>
     <!--Strings para el menu principal en español-->
     <string name="button_nueva">NUEVA PARTIDA</string>
-    <string name="button_continuar">CONTINUAR PARTIDA</string>
     <string name="button_ajustes">CONFIGURACION</string>
     <string name="button_perfil">PERFIL</string>
     <!--Strings para el menu principal en ingles-->
     <string name="button_new">NEW GAME</string>
-    <string name="button_continue">CONTINUE GAME</string>
     <string name="button_setting">SETTINGS</string>
     <string name="button_profile">PROFILE</string>
     <string name="singleplayer">SINGLEPLAYER</string>

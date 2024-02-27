@@ -18,7 +18,6 @@ public class MenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_menu);
         ImageView imageViewLogo = findViewById(R.id.img_logo2);
         Button buttonNuevaPartida = findViewById(R.id.btn_nueva_partida);
-        Button buttonContinuarPartida = findViewById(R.id.btn_continuar_partida);
         Button buttonConfiguracion = findViewById(R.id.btn_configuracion);
         ImageButton imageButtonIdioma = findViewById(R.id.btn_idioma);
         Button buttonPerfil = findViewById(R.id.btn_perfil);
@@ -43,14 +42,6 @@ public class MenuActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        // Listener del boton para continuar partida
-        buttonContinuarPartida.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                soundManager.playSound(MenuActivity.this,  MainActivity.sonido);
-                startActivity(new Intent(MenuActivity.this, PartidaActivity.class));
-            }
-        });
         // Listener del boton de configuracion
         buttonConfiguracion.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,13 +58,11 @@ public class MenuActivity extends AppCompatActivity {
                 if(imagenCambiada){
                     imageButtonIdioma.setImageResource(R.drawable.espana);
                     buttonNuevaPartida.setText(R.string.button_nueva);
-                    buttonContinuarPartida.setText(R.string.button_continuar);
                     buttonConfiguracion.setText(R.string.button_ajustes);
                     buttonPerfil.setText(R.string.button_perfil);
                 } else {
                     imageButtonIdioma.setImageResource(R.drawable.estados_unidos);
                     buttonNuevaPartida.setText(R.string.button_new);
-                    buttonContinuarPartida.setText(R.string.button_continue);
                     buttonConfiguracion.setText(R.string.button_setting);
                     buttonPerfil.setText(R.string.button_profile);
                 }
