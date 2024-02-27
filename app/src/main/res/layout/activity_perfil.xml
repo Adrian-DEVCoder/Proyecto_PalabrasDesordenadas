@@ -7,4 +7,120 @@
     android:background="#9664EF"
     tools:context=".PerfilActivity">
 
+    <ImageView
+        android:id="@+id/img_logo2"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="72dp"
+        android:background="@drawable/borde_redondo"
+        android:contentDescription="Logo de Chaos"
+        android:scaleType="centerCrop"
+        android:src="@drawable/logochaos"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/img_logo2">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/img_trofeo"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="12dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/trophy_locked" />
+
+            <ImageView
+                android:id="@+id/img_trofeo_2"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="12dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/trophy_locked" />
+
+            <ImageView
+                android:id="@+id/img_trofeo_3"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="12dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/trophy_locked" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/img_trofeo_4"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="12dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/trophy_locked" />
+
+            <ImageView
+                android:id="@+id/img_trofeo_5"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="12dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/trophy_locked" />
+
+            <ImageView
+                android:id="@+id/img_trofeo_6"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="12dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/trophy_locked" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/img_trofeo_7"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="12dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/trophy_locked" />
+
+            <ImageView
+                android:id="@+id/img_trofeo_8"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="12dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/trophy_locked" />
+
+            <ImageView
+                android:id="@+id/img_trofeo_9"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="12dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/trophy_locked" />
+        </LinearLayout>
+
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

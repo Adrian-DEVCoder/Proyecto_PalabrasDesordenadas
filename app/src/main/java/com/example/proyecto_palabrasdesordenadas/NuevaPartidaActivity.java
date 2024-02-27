@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class NuevaPartidaActivity extends AppCompatActivity {
-
+    private SoundManager soundManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,6 +22,8 @@ public class NuevaPartidaActivity extends AppCompatActivity {
         ImageButton buttonMultijugador = findViewById(R.id.btn_multiplayer);
         TextView textViewUnJugador = findViewById(R.id.tv_singleplayer);
         TextView textViewMultijugador = findViewById(R.id.tv_multiplayer);
+        soundManager = new SoundManager();
+        soundManager.setVolume(MainActivity.volson);
         if(imagenCambiada){
             textViewUnJugador.setText(R.string.singleplayer);
             textViewMultijugador.setText(R.string.s_multiplayer);
@@ -34,6 +36,7 @@ public class NuevaPartidaActivity extends AppCompatActivity {
         imageViewLogo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                soundManager.playSound(NuevaPartidaActivity.this,  MainActivity.sonido);
                 Intent intent = new Intent(NuevaPartidaActivity.this, MenuActivity.class);
                 intent.putExtra("imagenCambiada",imagenCambiada);
                 startActivity(intent);
@@ -43,6 +46,7 @@ public class NuevaPartidaActivity extends AppCompatActivity {
         buttonUnJugador.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                soundManager.playSound(NuevaPartidaActivity.this,  MainActivity.sonido);
                 Intent intent = new Intent(NuevaPartidaActivity.this, PartidaActivity.class);
                 intent.putExtra("imagenCambiada",imagenCambiada);
                 startActivity(intent);
@@ -52,6 +56,7 @@ public class NuevaPartidaActivity extends AppCompatActivity {
         buttonMultijugador.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                soundManager.playSound(NuevaPartidaActivity.this,  MainActivity.sonido);
                 Intent intent = new Intent(NuevaPartidaActivity.this, MultijugadorActivity.class);
                 intent.putExtra("imagenCambiada",imagenCambiada);
                 startActivity(intent);

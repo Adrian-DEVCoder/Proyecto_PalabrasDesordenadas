@@ -1,20 +1,23 @@
 <resources>
-    <string name="app_name">Proyecto_PalabrasDesordenadas</string>
+    <string name="app_name">Word Chaos</string>
     <string name="iniciar_sesi_n">Iniciar Sesión</string>
     <string name="logo_app">Logo app</string>
     <!--Strings para el menu principal en español-->
     <string name="button_nueva">NUEVA PARTIDA</string>
-    <string name="button_continuar">CONTINUAR PARTIDA</string>
     <string name="button_ajustes">CONFIGURACION</string>
     <string name="button_perfil">PERFIL</string>
     <!--Strings para el menu principal en ingles-->
     <string name="button_new">NEW GAME</string>
-    <string name="button_continue">CONTINUE GAME</string>
     <string name="button_setting">SETTINGS</string>
     <string name="button_profile">PROFILE</string>
     <string name="singleplayer">SINGLEPLAYER</string>
     <string name="s_multiplayer">MULTIPLAYER</string>
     <string name="un_jugador">UN JUGADOR</string>
     <string name="multijugador">MULTIJUGADOR</string>
+    <string name="comprobar">COMPROBAR</string>
+    <string name="boton_borrar">BORRAR</string>
+    <string name="button_check">CHECK</string>
+    <string name="button_delete">DELETE</string>
+    <string name="default_web_client_id">747561012904-utmhdbk5frjnejoe0ja389pmub2l9f3q.apps.googleusercontent.com</string>
 
 </resources>
