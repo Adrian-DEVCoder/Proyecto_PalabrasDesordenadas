@@ -17,6 +17,9 @@
         android:theme="@style/Theme.Proyecto_PalabrasDesordenadas"
         tools:targetApi="tiramisu">
         <activity
+            android:name=".JuegoMultijugadorActivity"
+            android:exported="false" />
+        <activity
             android:name=".EsperaMultijugadorActivity"
             android:exported="false" />
 

@@ -91,9 +91,14 @@ public class MultijugadorActivity extends AppCompatActivity {
                         Sala sala = salaSnapshot.getValue(Sala.class);
                         if (sala.getNombre().equals(nombreSala) && sala.getContrasena().equals(contrasena)) {
                             // Unirse a la sala
-                            mDatabase.child("salas").child(salaSnapshot.getKey()).child("jugadores").child(jugadorActual).setValue(true);
+                            String salaId = salaSnapshot.getKey(); // Obtener el ID de la sala
+                            mDatabase.child("salas").child(salaId).child("jugadores").child(jugadorActual).setValue(true);
                             Toast.makeText(MultijugadorActivity.this, "Unido a la sala con éxito", Toast.LENGTH_SHORT).show();
-                            // Aquí puedes redirigir al usuario a la pantalla de espera o al juego
+                            // Redirigir al usuario a la pantalla de espera
+                            Intent intent = new Intent(MultijugadorActivity.this, EsperaMultijugadorActivity.class);
+                            intent.putExtra("salaId", salaId);
+                            intent.putExtra("jugadorActual", jugadorActual);
+                            startActivity(intent);
                             break;
                         }
                     }
@@ -108,5 +113,6 @@ public class MultijugadorActivity extends AppCompatActivity {
             Toast.makeText(this, "Por favor, introduce el nombre y la contraseña de la sala", Toast.LENGTH_SHORT).show();
         }
     }
+
 
 }
