@@ -74,6 +74,13 @@ public class JuegoActivity extends AppCompatActivity {
         String dificultadSeleccionada = intent.getStringExtra("dificultadSeleccionada");
         boolean modoContrarreloj = intent.getBooleanExtra("modoContrarreloj",false);
         boolean modoPuntuacion = intent.getBooleanExtra("modoPuntuacion",false);
+        Intent stopIntent = new Intent(this, BackgroundSoundService.class);
+        stopService(stopIntent);
+
+        // Iniciar el servicio de nuevo con la nueva canción
+        Intent startIntent = new Intent(this, BackgroundSoundService.class);
+        startIntent.putExtra("song_selection",  2); //  2 para la canción "reloj"
+        startService(startIntent);
         // Declaracion y asignacion de variables
         Button buttonComprobar = findViewById(R.id.btn_comprobar);
         Button buttonBorrar = findViewById(R.id.btn_borrar);
@@ -256,6 +263,11 @@ public class JuegoActivity extends AppCompatActivity {
     // Metodo para terminar el juego
     private void terminarJuego(boolean imagenCambiada, int puntuacion, boolean modoContrarreloj, boolean modoPuntuacion) {
         // Verificar si el temporizador es null antes de cancelarlo
+        Intent stopIntent = new Intent(this, BackgroundSoundService.class);
+        stopService(stopIntent);
+        Intent startIntent = new Intent(this, BackgroundSoundService.class);
+        startIntent.putExtra("song_selection",  1); //  1 para la canción "music"
+        startService(startIntent);
         if (countDownTimer != null) {
             countDownTimer.cancel();
         }
