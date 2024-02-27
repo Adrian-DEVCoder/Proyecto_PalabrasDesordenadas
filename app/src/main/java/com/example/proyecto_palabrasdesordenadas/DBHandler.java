@@ -64,25 +64,34 @@ public class DBHandler extends SQLiteOpenHelper {
         }
     }
     // Metodo para generar palabras aleatorias, en español o ingles dependiendo del idioma seleccionado
-    public String generarPalabraAleatoria(boolean imagenCambiada) {
+    public String generarPalabraAleatoria(boolean esIngles) {
         SQLiteDatabase db = this.getReadableDatabase();
         int numeroAleatorio = new Random().nextInt(200) + 1;
         String sNumero = String.valueOf(numeroAleatorio);
         Cursor cursor = null;
         String palabraGenerada = null;
         try {
-            if (!imagenCambiada) {
+            if (!esIngles) {
                 cursor = db.rawQuery("SELECT " + SPANISH_WORD_COL + " FROM " + TABLE_NAME + " WHERE " + ID_COL + " = ?", new String[]{sNumero});
+                if (cursor.moveToFirst()) {
+                    palabraGenerada = cursor.getString(0);
+                } else {
+                    if (!esIngles) {
+                        System.out.println("Error al obtener la palabra de la base de datos en español. ID: " + sNumero);
+                    } else {
+                        System.out.println("Error al obtener la palabra en inglés de la base de datos. ID: " + sNumero);
+                    }
+                }
             } else {
                 cursor = db.rawQuery("SELECT " + ENGLISH_WORD_COL + " FROM " + TABLE_NAME + " WHERE " + ID_COL + " = ?", new String[]{sNumero});
-            }
-            if (cursor.moveToFirst()) {
-                palabraGenerada = cursor.getString(0);
-            } else {
-                if (!imagenCambiada) {
-                    System.out.println("Error al obtener la palabra de la base de datos en español. ID: " + sNumero);
+                if (cursor.moveToFirst()) {
+                    palabraGenerada = cursor.getString(cursor.getColumnIndex(ENGLISH_WORD_COL));
                 } else {
-                    System.out.println("Error al obtener la palabra en inglés de la base de datos. ID: " + sNumero);
+                    if (esIngles) {
+                        System.out.println("Error al obtener la palabra de la base de datos en ingles. ID: " + sNumero);
+                    } else {
+                        System.out.println("Error al obtener la palabra en inglés de la base de datos. ID: " + sNumero);
+                    }
                 }
             }
         } catch (SQLiteException e) {

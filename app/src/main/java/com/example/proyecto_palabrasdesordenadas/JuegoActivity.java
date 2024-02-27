@@ -50,6 +50,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class JuegoActivity extends AppCompatActivity {
+    // Llamamos a la clase Sound Manager
     private SoundManager soundManager;
     private int vidasRestantes = 3;
     private int puntuacion = 0;
@@ -153,7 +154,7 @@ public class JuegoActivity extends AppCompatActivity {
                             Toast.makeText(JuegoActivity.this,"You're right!",Toast.LENGTH_SHORT).show();
                         }
                         do {
-                            palabraUsuario = dbHandler.generarPalabraAleatoria(imagenCambiada);
+                            palabraUsuario = (String) dbHandler.generarPalabraAleatoria(imagenCambiada);
                         } while (!verificarLongitudPalabra(palabraUsuario, dificultadSeleccionada));
                         registrarPalabraFormada(usuarioId,palabraUsuario);
                         if (modoPuntuacion) {
@@ -236,10 +237,13 @@ public class JuegoActivity extends AppCompatActivity {
     // Metodo para verificar la longitud de la palabra
     private boolean verificarLongitudPalabra(String palabra, String dificultad) {
         switch (dificultad) {
+            case "EASY":
             case "FÁCIL":
                 return palabra.length() >= 3 && palabra.length() <= 4;
             case "NORMAL":
+            case "MEDIA":
                 return palabra.length() >= 5 && palabra.length() <= 8;
+            case "HARD":
             case "DÍFICIL":
                 return palabra.length() >= 9;
             default:
