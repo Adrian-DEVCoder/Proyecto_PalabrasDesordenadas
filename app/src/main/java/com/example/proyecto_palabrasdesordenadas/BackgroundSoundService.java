@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.media.MediaPlayer;
 import android.os.IBinder;
+import android.util.Log;
 
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
@@ -35,6 +36,12 @@ public class BackgroundSoundService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
+        if (intent == null) {
+            // Manejar el caso en que el Intent es null
+            Log.e("BackgroundSoundService", "Intent es null");
+            return START_STICKY;
+        }
 
         if (mediaPlayer != null && mediaPlayer.isPlaying()) {
             return START_STICKY;

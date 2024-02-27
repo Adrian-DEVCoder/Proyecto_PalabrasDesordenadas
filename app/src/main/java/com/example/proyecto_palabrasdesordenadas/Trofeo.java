@@ -5,6 +5,9 @@ public class Trofeo {
     private String recurso;
     private String descripcion;
 
+    public Trofeo() {
+    }
+
     public Trofeo(String titulo, String recurso, String descripcion) {
         this.titulo = titulo;
         this.recurso = recurso;

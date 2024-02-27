@@ -17,6 +17,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -87,24 +89,45 @@ public class RegistroActivity extends AppCompatActivity {
     }
 
     private void crearDocumentoUsuario(FirebaseUser user, String nombre) {
-        Map<String, Object> usuario = new HashMap<>();
-        usuario.put("nombre", nombre);
-        usuario.put("email", user.getEmail());
-        usuario.put("trofeos", new ArrayList<String>()); // Inicialmente, el usuario no tiene trofeos
+        DocumentReference usuarioRef = db.collection("usuarios").document(user.getUid());
 
-        db.collection("usuarios").document(user.getUid())
-                .set(usuario)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        System.out.println("Documento creado exitosamente");
+        // Verificar si el documento del usuario ya existe
+        usuarioRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        // El documento ya existe, no es necesario crearlo de nuevo
+                        System.out.println("El documento del usuario ya existe");
+                    } else {
+                        // El documento no existe, proceder a crearlo
+                        Map<String, Object> usuario = new HashMap<>();
+                        usuario.put("nombre", nombre);
+                        usuario.put("email", user.getEmail());
+                        usuario.put("partidas", new ArrayList<>());
+                        usuario.put("palabrasFormadas", new ArrayList<>());
+                        usuario.put("trofeos", new ArrayList<String>()); // Inicialmente, el usuario no tiene trofeos
+
+                        usuarioRef.set(usuario)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        System.out.println("Documento creado exitosamente");
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        System.out.println("Error al crear el documento: " + e);
+                                    }
+                                });
                     }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        System.out.println("Error al crear el documento: " + e);
-                    }
-                });
+                } else {
+                    System.out.println("Error al verificar el documento del usuario: " + task.getException());
+                }
+            }
+        });
     }
+
 }

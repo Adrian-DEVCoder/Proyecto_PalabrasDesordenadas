@@ -31,6 +31,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -71,6 +73,8 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, BackgroundSoundService.class);
         intent.putExtra("song_selection",1 );
         startService(intent);
+        Intent intentTrofeos = new Intent(this, TrophyService.class);
+        startService(intentTrofeos);
         buttonIniciarSesion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -177,25 +181,46 @@ public class MainActivity extends AppCompatActivity {
 
     private void crearDocumentoUsuarioGoogle(FirebaseUser user){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        Map<String, Object> datosUsuario = new HashMap<>();
-        datosUsuario.put("nombre", user.getDisplayName());
-        datosUsuario.put("email", user.getEmail());
-        datosUsuario.put("trofeos", new ArrayList<>());
+        DocumentReference usuarioRef = db.collection("usuarios").document(user.getUid());
 
-        db.collection("usuarios").document(user.getUid())
-                .set(datosUsuario)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        Log.d(TAG, "Documento guardado correctamente!");
+        // Verificar si el documento del usurious ya existe
+        usuarioRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        // El documento ya existe, no es necesario crearlo de nuevo
+                        Log.d(TAG, "El documento del usuario ya existe");
+                    } else {
+                        // El documento no existe, proceder a crearlo
+                        Map<String, Object> datosUsuario = new HashMap<>();
+                        datosUsuario.put("nombre", user.getDisplayName());
+                        datosUsuario.put("email", user.getEmail());
+                        datosUsuario.put("partidas", new ArrayList<>());
+                        datosUsuario.put("palabrasFormadas", new ArrayList<>());
+                        datosUsuario.put("trofeos", new ArrayList<String>()); // Inicialmente, el usuario no tiene trofeos
+
+                        usuarioRef.set(datosUsuario)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Log.d(TAG, "Documento creado exitosamente");
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.w(TAG, "Error al crear el documento: " + e);
+                                    }
+                                });
                     }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error al guardar el documento.");
-                    }
-                });
+                } else {
+                    Log.w(TAG, "Error al verificar el documento del usuario: " + task.getException());
+                }
+            }
+        });
     }
+
 
 }
