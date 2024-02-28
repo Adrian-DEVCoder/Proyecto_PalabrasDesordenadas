@@ -10,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:background="#673AB7"
-        android:backgroundTint="#673AB7"
         android:paddingTop="20dp"
         android:text="Trofeo de Excelencia"
         android:textAlignment="center"

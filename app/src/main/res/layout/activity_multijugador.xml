@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#9664EF"
-    android:backgroundTint="#9664EF"
+    android:background="#673AB7"
     tools:context=".MultijugadorActivity">
 
     <ImageView
@@ -13,10 +12,9 @@
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_marginTop="72dp"
-        android:background="@drawable/borde_redondo"
         android:contentDescription="Logo de Chaos"
         android:scaleType="centerCrop"
-        android:src="@drawable/logochaos"
+        android:src="@drawable/logo_app"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,7 +22,7 @@
 
     <EditText
         android:id="@+id/edt_nombresala"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="92dp"
         android:layout_marginEnd="36dp"
@@ -95,7 +93,7 @@
 
     <EditText
         android:id="@+id/edt_contrasena"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"
         android:layout_marginEnd="36dp"

@@ -2,12 +2,14 @@ package com.example.proyecto_palabrasdesordenadas;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -68,11 +70,15 @@ public class RegistroActivity extends AppCompatActivity {
                                 if (user != null) {
                                     crearDocumentoUsuario(user, nombre);
                                 }
-                                Toast.makeText(RegistroActivity.this, "Creacion de Cuenta Satisfactoria.", Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(RegistroActivity.this, MenuActivity.class));
                                 finish();
                             } else {
-                                Toast.makeText(RegistroActivity.this, "Creación de Cuenta Errónea.", Toast.LENGTH_SHORT).show();
+                                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(RegistroActivity.this);
+                                LayoutInflater inflater = getLayoutInflater();
+                                View dialogView = inflater.inflate(R.layout.dialog_error_creacion, null);
+                                dialogBuilder.setView(dialogView);
+                                AlertDialog alertDialog = dialogBuilder.create();
+                                alertDialog.show();
                             }
                         }
                     });

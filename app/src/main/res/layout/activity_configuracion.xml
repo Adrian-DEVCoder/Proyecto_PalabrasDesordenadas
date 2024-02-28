@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#9664EF"
+    android:background="#673AB7"
     tools:context=".ConfiguracionActivity">
 
     <ImageView
@@ -15,7 +15,7 @@
         android:background="@drawable/borde_redondo"
         android:contentDescription="Logo de Chaos"
         android:scaleType="centerCrop"
-        android:src="@drawable/logochaos"
+        android:src="@drawable/logo_app"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
