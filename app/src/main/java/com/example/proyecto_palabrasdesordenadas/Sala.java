@@ -1,9 +1,12 @@
 package com.example.proyecto_palabrasdesordenadas;
 
+import java.util.HashMap;
+import java.util.List;
+
 public class Sala {
     private String nombre;
     private String contrasena;
-
+    private HashMap<String, Object> jugadores;
     public Sala() {
     }
 
@@ -26,5 +29,13 @@ public class Sala {
 
     public void setContrasena(String contrasena) {
         this.contrasena = contrasena;
+    }
+
+    public HashMap<String, Object> getJugadores() {
+        return jugadores;
+    }
+
+    public void setJugadores(HashMap<String, Object> jugadores) {
+        this.jugadores = jugadores;
     }
 }

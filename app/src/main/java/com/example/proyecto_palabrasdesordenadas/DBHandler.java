@@ -107,6 +107,32 @@ public class DBHandler extends SQLiteOpenHelper {
         return palabraGenerada;
     }
 
+    public String generarPalabraAleatoriaMultijugador(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        int numeroAleatorio = new Random().nextInt(200) + 1;
+        String sNumero = String.valueOf(numeroAleatorio);
+        Cursor cursor = null;
+        String palabraGenerada = null;
+        try {
+            cursor = db.rawQuery("SELECT " + SPANISH_WORD_COL + " FROM " + TABLE_NAME + " WHERE " + ID_COL + " = ?", new String[]{sNumero});
+            if (cursor.moveToFirst()) {
+                palabraGenerada = cursor.getString(0);
+            } else {
+                System.out.println("Error al obtener la palabra de la base de datos en español. ID: " + sNumero);
+            }
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            if (db != null && db.isOpen()) {
+                db.close();
+            }
+        }
+        return palabraGenerada;
+    }
+
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
