@@ -16,6 +16,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Proyecto_PalabrasDesordenadas"
         tools:targetApi="tiramisu">
+        <activity
+            android:name=".DerrotaActivity"
+            android:exported="false" />
+        <activity
+            android:name=".VictoriaDerrotaActivity"
+            android:exported="false" />
 
         <service android:name=".BackgroundSoundService" />
         <service android:name=".TrophyService" />

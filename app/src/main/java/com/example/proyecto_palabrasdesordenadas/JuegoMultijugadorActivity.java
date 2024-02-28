@@ -42,8 +42,10 @@ public class JuegoMultijugadorActivity extends AppCompatActivity {
     DBHandler dbHandler;
     public String palabraOriginal;
     private ExecutorService executorService;
-    public String idUsuario;
+    public static String idUsuario;
     public String idRival;
+    public static String idGanador;
+    public static String idPerdedor;
     private DatabaseReference gameRef;
     private ValueEventListener vidaUsuarioListener;
     private ValueEventListener vidaRivalListener;
@@ -182,6 +184,10 @@ public class JuegoMultijugadorActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 int vidaActual = snapshot.getValue(Integer.class);
                 hpBarUsuario.setProgress(vidaActual);
+                if(vidaActual <= 0){
+                    redirigirAJugadorGanador(idRival); // El rival es el ganador
+                    redirigirAJugadorPerdedor(idUsuario); // El usuario actual es el perdedor
+                }
             }
 
             @Override
@@ -191,6 +197,7 @@ public class JuegoMultijugadorActivity extends AppCompatActivity {
         };
         vidaUsuarioRef.addValueEventListener(vidaUsuarioListener);
     }
+
     private void escucharVidaRival(ProgressBar hpBarRival){
         DatabaseReference vidaRivalRef = gameRef.child(idRival).child("vida");
         vidaRivalListener = new ValueEventListener() {
@@ -198,6 +205,10 @@ public class JuegoMultijugadorActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 int vidaActual = snapshot.getValue(Integer.class);
                 hpBarRival.setProgress(vidaActual);
+                if(vidaActual <= 0){
+                    redirigirAJugadorGanador(idUsuario); // El usuario actual es el ganador
+                    redirigirAJugadorPerdedor(idRival); // El rival es el perdedor
+                }
             }
 
             @Override
@@ -207,6 +218,22 @@ public class JuegoMultijugadorActivity extends AppCompatActivity {
         };
         vidaRivalRef.addValueEventListener(vidaRivalListener);
     }
+
+    // Metodo para redirigir a victoria o a derrota
+    private void redirigirAJugadorGanador(String idGanador) {
+        JuegoMultijugadorActivity.idGanador = idGanador;
+        Intent intent = new Intent(JuegoMultijugadorActivity.this, VictoriaDerrotaActivity.class);
+        startActivity(intent);
+        finish(); // Finaliza la actividad actual para evitar regresar a ella
+    }
+
+    private void redirigirAJugadorPerdedor(String idPerdedor) {
+        JuegoMultijugadorActivity.idPerdedor = idPerdedor;
+        Intent intent = new Intent(JuegoMultijugadorActivity.this, VictoriaDerrotaActivity.class);
+        startActivity(intent);
+        finish(); // Finaliza la actividad actual para evitar regresar a ella
+    }
+
     // Metodos para reducir la vida del usuario y del rival
     private void reducirVidaUsuario(int damage) {
         DatabaseReference vidaUsuarioRef = gameRef.child(idUsuario).child("vida");
