@@ -16,16 +16,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Proyecto_PalabrasDesordenadas"
         tools:targetApi="tiramisu">
+
+        <service android:name=".BackgroundSoundService" />
+        <service android:name=".TrophyService" />
+
         <activity
             android:name=".JuegoMultijugadorActivity"
             android:exported="false" />
         <activity
             android:name=".EsperaMultijugadorActivity"
             android:exported="false" />
-
-        <service android:name=".BackgroundSoundService" />
-        <service android:name=".TrophyService" />
-
         <activity
             android:name=".JuegoActivity"
             android:exported="false" />

@@ -1,5 +1,6 @@
 package com.example.proyecto_palabrasdesordenadas;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -64,6 +65,7 @@ public class DBHandler extends SQLiteOpenHelper {
         }
     }
     // Metodo para generar palabras aleatorias, en español o ingles dependiendo del idioma seleccionado
+    @SuppressLint("Range")
     public String generarPalabraAleatoria(boolean esIngles) {
         SQLiteDatabase db = this.getReadableDatabase();
         int numeroAleatorio = new Random().nextInt(200) + 1;
@@ -108,7 +110,7 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     public String generarPalabraAleatoriaMultijugador(){
-        SQLiteDatabase db = this.getReadableDatabase();
+        SQLiteDatabase db = this.getWritableDatabase();
         int numeroAleatorio = new Random().nextInt(200) + 1;
         String sNumero = String.valueOf(numeroAleatorio);
         Cursor cursor = null;
