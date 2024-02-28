@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "747561012904",
+    "firebase_url": "https://palabras-desordenadas-default-rtdb.europe-west1.firebasedatabase.app",
     "project_id": "palabras-desordenadas",
     "storage_bucket": "palabras-desordenadas.appspot.com"
   },

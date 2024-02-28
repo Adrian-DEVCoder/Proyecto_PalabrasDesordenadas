@@ -16,6 +16,12 @@ public class MenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+        Intent stopIntent = new Intent(this, BackgroundSoundService.class);
+        stopService(stopIntent);
+        // Iniciar el servicio de nuevo con la nueva canción
+        Intent startIntent = new Intent(this, BackgroundSoundService.class);
+        startIntent.putExtra("song_selection", 1);
+        startService(startIntent);
         ImageView imageViewLogo = findViewById(R.id.img_logo2);
         Button buttonNuevaPartida = findViewById(R.id.btn_nueva_partida);
         Button buttonConfiguracion = findViewById(R.id.btn_configuracion);
