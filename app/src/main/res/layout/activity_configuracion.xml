@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#9664EF"
+    android:background="#673AB7"
     tools:context=".ConfiguracionActivity">
 
     <ImageView
@@ -15,7 +15,7 @@
         android:background="@drawable/borde_redondo"
         android:contentDescription="Logo de Chaos"
         android:scaleType="centerCrop"
-        android:src="@drawable/logochaos"
+        android:src="@drawable/logo_app"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -25,15 +25,15 @@
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="88dp"
+        android:layout_width="wrap_content"
         android:layout_height="21dp"
+        android:fontFamily="@font/montserrat_medium"
         android:text="Música"
-        android:textAlignment="textStart"
-        android:textColor="#000000"
+        android:textColor="#EFB810"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.13"
+        app:layout_constraintHorizontal_bias="0.206"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.388" />
@@ -44,7 +44,11 @@
         android:layout_height="23dp"
         android:max="100"
         android:progress="100"
-        android:progressTint="#000000"
+        android:progressBackgroundTint="#4A2192"
+        android:progressTint="#EFB810"
+        android:progressTintMode="src_in"
+        android:thumbTint="#4A2192"
+        android:thumbTintMode="add"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.73"
@@ -54,15 +58,15 @@
 
     <TextView
         android:id="@+id/textView2"
-        android:layout_width="88dp"
+        android:layout_width="wrap_content"
         android:layout_height="21dp"
+        android:fontFamily="@font/montserrat_medium"
         android:text="Sonido"
-        android:textAlignment="textStart"
-        android:textColor="#000000"
+        android:textColor="#EFB810"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.13"
+        app:layout_constraintHorizontal_bias="0.221"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.485" />
@@ -73,7 +77,10 @@
         android:layout_height="22dp"
         android:max="100"
         android:progress="100"
-        android:progressTint="#000000"
+        android:progressBackgroundTint="#4A2192"
+        android:progressTint="#EFB810"
+        android:thumbTint="#4A2192"
+        android:thumbTintMode="add"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.73"
@@ -83,13 +90,19 @@
 
     <Button
         android:id="@+id/btn_sound"
-        android:layout_width="192dp"
-        android:layout_height="57dp"
+        android:layout_width="200dp"
+        android:layout_height="60dp"
+        android:backgroundTint="#4A2192"
+        android:fontFamily="@font/montserrat_semibold"
         android:text="GUARDAR CAMBIOS"
+        android:textColor="#EFB810"
+        android:textStyle="italic"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.642" />
+        app:layout_constraintVertical_bias="0.642"
+        app:strokeColor="#EFB810"
+        app:strokeWidth="1dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

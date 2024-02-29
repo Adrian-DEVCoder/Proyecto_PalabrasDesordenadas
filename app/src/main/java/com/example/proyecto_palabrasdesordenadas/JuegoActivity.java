@@ -1,7 +1,10 @@
 package com.example.proyecto_palabrasdesordenadas;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.res.ResourcesCompat;
 
 import android.content.Intent;
@@ -11,10 +14,12 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.animation.ScaleAnimation;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,12 +28,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -61,6 +68,7 @@ public class JuegoActivity extends AppCompatActivity {
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     String usuarioId = user.getUid();
     DBHandler dbHandler;
+    private boolean imagenCambiada;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,21 +78,21 @@ public class JuegoActivity extends AppCompatActivity {
         dbHandler = new DBHandler(JuegoActivity.this);
         // Obtenemos los valores del idioma seleccionado, dificultad y modo de juego
         Intent intent = getIntent();
-        boolean imagenCambiada = intent.getBooleanExtra("imagenCambiada",false);
+        imagenCambiada = intent.getBooleanExtra("imagenCambiada", false);
         String dificultadSeleccionada = intent.getStringExtra("dificultadSeleccionada");
-        boolean modoContrarreloj = intent.getBooleanExtra("modoContrarreloj",false);
-        boolean modoPuntuacion = intent.getBooleanExtra("modoPuntuacion",false);
+        boolean modoContrarreloj = intent.getBooleanExtra("modoContrarreloj", false);
+        boolean modoPuntuacion = intent.getBooleanExtra("modoPuntuacion", false);
         Intent stopIntent = new Intent(this, BackgroundSoundService.class);
         stopService(stopIntent);
 
         // Iniciar el servicio de nuevo con la nueva canción
         Intent startIntent = new Intent(this, BackgroundSoundService.class);
-        startIntent.putExtra("song_selection",  2); //  2 para la canción "reloj"
+        startIntent.putExtra("song_selection", 2); //  2 para la canción "reloj"
         startService(startIntent);
         // Declaracion y asignacion de variables
         Button buttonComprobar = findViewById(R.id.btn_comprobar);
         Button buttonBorrar = findViewById(R.id.btn_borrar);
-        if(!imagenCambiada){
+        if (!imagenCambiada) {
             buttonComprobar.setText(R.string.comprobar);
             buttonBorrar.setText(R.string.boton_borrar);
         } else {
@@ -115,7 +123,7 @@ public class JuegoActivity extends AppCompatActivity {
             imageViewVida3.setVisibility(View.VISIBLE);
             textViewPuntuacion.setVisibility(View.GONE);
             textViewScore.setVisibility(View.GONE);
-            iniciarTemporizador(imagenCambiada,modoContrarreloj,modoPuntuacion);
+            iniciarTemporizador(imagenCambiada, modoContrarreloj, modoPuntuacion);
         } else if (modoPuntuacion) {
             // Modo Puntuación: Mostramos la puntuación y las vidas, ocultamos el temporizador
             textViewPuntuacion.setVisibility(View.VISIBLE);
@@ -153,22 +161,23 @@ public class JuegoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String palabraUsuario = editTextPalabraUsuario.getText().toString().trim().toLowerCase();
-                String palabraMostrada = textViewPalabra.getText().toString().trim().toLowerCase();
-                if (!palabraUsuario.isEmpty() && palabraUsuario.length() == palabraMostrada.length()) {
+                if (!palabraUsuario.isEmpty()) {
                     if (palabraUsuario.equals(palabraOriginal.toLowerCase())) {
-                        soundManager.playSound(JuegoActivity.this,5);
-                        if(!imagenCambiada){
-                            Toast.makeText(JuegoActivity.this,"Has acertado!",Toast.LENGTH_SHORT).show();
+                        soundManager.playSound(JuegoActivity.this, 5);
+                        if (!imagenCambiada) {
+                            Animation scaleAnimation = AnimationUtils.loadAnimation(JuegoActivity.this, R.anim.scale_animation_success);
+                            editTextPalabraUsuario.startAnimation(scaleAnimation);
                         } else {
-                            Toast.makeText(JuegoActivity.this,"You're right!",Toast.LENGTH_SHORT).show();
+                            Animation scaleAnimation = AnimationUtils.loadAnimation(JuegoActivity.this, R.anim.scale_animation_success);
+                            editTextPalabraUsuario.startAnimation(scaleAnimation);
                         }
                         do {
                             palabraUsuario = (String) dbHandler.generarPalabraAleatoria(imagenCambiada);
                         } while (!verificarLongitudPalabra(palabraUsuario, dificultadSeleccionada));
-                        registrarPalabraFormada(usuarioId,palabraUsuario);
+                        registrarPalabraFormada(usuarioId, palabraUsuario);
                         if (modoPuntuacion) {
                             Random random = new Random();
-                            int puntuacionAleatoria = random.nextInt(11) +  15;
+                            int puntuacionAleatoria = random.nextInt(11) + 15;
                             puntuacion += puntuacionAleatoria;
                             textViewScore.setText(String.valueOf(puntuacion));
                         } else {
@@ -180,14 +189,16 @@ public class JuegoActivity extends AppCompatActivity {
                         textViewPalabra.setText(nuevaPalabraDesordenada);
                         editTextPalabraUsuario.setText("");
                     } else {
-                        soundManager.playSound(JuegoActivity.this,6);
-                        if(!imagenCambiada){
-                            Toast.makeText(JuegoActivity.this,"Has fallado!",Toast.LENGTH_SHORT).show();
+                        soundManager.playSound(JuegoActivity.this, 6);
+                        if (!imagenCambiada) {
+                            Animation shakeAnimation = AnimationUtils.loadAnimation(JuegoActivity.this, R.anim.shake_animation);
+                            editTextPalabraUsuario.startAnimation(shakeAnimation);
                         } else {
-                            Toast.makeText(JuegoActivity.this,"You failed!",Toast.LENGTH_SHORT).show();
+                            Animation shakeAnimation = AnimationUtils.loadAnimation(JuegoActivity.this, R.anim.shake_animation);
+                            editTextPalabraUsuario.startAnimation(shakeAnimation);
                         }
                         vidasRestantes--;
-                        switch (vidasRestantes){
+                        switch (vidasRestantes) {
                             case 2:
                                 imageViewVida1.setImageResource(R.drawable.nlife);
                                 break;
@@ -196,13 +207,7 @@ public class JuegoActivity extends AppCompatActivity {
                                 break;
                             case 0:
                                 imageViewVida3.setImageResource(R.drawable.nlife);
-                                if(!imagenCambiada){
-                                    Toast.makeText(JuegoActivity.this,"Se agotaron las vidas del juego. Juego Terminado.",Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Toast.makeText(JuegoActivity.this,"The game lives have run out. Game Over.",Toast.LENGTH_SHORT).show();
-                                }
-                                terminarJuego(imagenCambiada,puntuacion,modoContrarreloj,modoPuntuacion);
-                                finish();
+                                terminarJuego(imagenCambiada, puntuacion, modoContrarreloj, modoPuntuacion);
                                 break;
                             default:
                                 break;
@@ -219,6 +224,45 @@ public class JuegoActivity extends AppCompatActivity {
             }
         });
     }
+    // Metodo para mostrar un dialogo cuando el juego termina
+    private void mostrarDialogoJuegoTerminado() {
+        // Crear el Dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(JuegoActivity.this);
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_game_over, null);
+        builder.setView(dialogView);
+        // Configurar el mensaje del Dialog
+        TextView dialogTitle = dialogView.findViewById(R.id.tv_dialog_titulo);
+        if (!imagenCambiada) {
+            dialogTitle.setText("JUEGO TERMINADO");
+        } else {
+            dialogTitle.setText("GAME OVER");
+        }
+        TextView dialogMessage = dialogView.findViewById(R.id.tv_dialog_mensaje);
+        if(!imagenCambiada) {
+            dialogMessage.setText("Se agotaron las vidas del juego");
+        } else {
+            dialogMessage.setText("There are no more lifes left");
+        }
+        // Configurar el botón del Dialog
+        Button dialogButton = dialogView.findViewById(R.id.btn_volvermenu);
+        if(!imagenCambiada){
+            dialogButton.setText("VOLVER AL MENU PRINCIPAL");
+        } else {
+            dialogButton.setText("BACK TO MAIN MENU");
+        }
+        dialogButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(JuegoActivity.this, PartidaActivity.class));
+            }
+        });
+
+        // Mostrar el Dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
     // Metodo para iniciar el temporizador, en el modo contrarreloj
     private void iniciarTemporizador(boolean imagenCambiada, boolean modoContrarreloj, boolean modoPuntuacion) {
         TextView textViewTimer = findViewById(R.id.tv_timerscore);
@@ -230,16 +274,11 @@ public class JuegoActivity extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-                if(!imagenCambiada){
-                    textViewTimer.setText("Tiempo agotado!!");
-                } else {
-                    textViewTimer.setText("Time out!!");
-                }
                 terminarJuego(imagenCambiada,puntuacion,modoContrarreloj,modoPuntuacion);
             }
         };
         textViewTimer.setTextSize(32);
-        textViewTimer.setTextColor(Color.RED);
+        textViewTimer.setTextColor(Color.parseColor("#EFB810"));
         Typeface customTypeface = ResourcesCompat.getFont(this, R.font.montserrat_bold);
         textViewTimer.setTypeface(customTypeface);
         countDownTimer.start();
@@ -263,6 +302,11 @@ public class JuegoActivity extends AppCompatActivity {
     // Metodo para terminar el juego
     private void terminarJuego(boolean imagenCambiada, int puntuacion, boolean modoContrarreloj, boolean modoPuntuacion) {
         // Verificar si el temporizador es null antes de cancelarlo
+        if(!imagenCambiada){
+            mostrarDialogoJuegoTerminado();
+        } else {
+            mostrarDialogoJuegoTerminado();
+        }
         Intent stopIntent = new Intent(this, BackgroundSoundService.class);
         stopService(stopIntent);
         Intent startIntent = new Intent(this, BackgroundSoundService.class);
@@ -277,11 +321,6 @@ public class JuegoActivity extends AppCompatActivity {
         } else {
             modo = "modoPuntuacion";
         }
-        if(!imagenCambiada){
-            Toast.makeText(JuegoActivity.this,"Se agotaron las vidas del juego. Juego Terminado.",Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(JuegoActivity.this,"The game lives have run out. Game Over.",Toast.LENGTH_SHORT).show();
-        }
         registrarPartida(usuarioId,modo,puntuacion,vidasRestantes);
         verificarEstrategaVerbal(usuarioId);
         verificarExploradorDeIdiomas(usuarioId, imagenCambiada);
@@ -292,7 +331,6 @@ public class JuegoActivity extends AppCompatActivity {
         verificarTrofeoSprinterVerbal(usuarioId);
         verificarTrofeoSupervivienteLinguistico(usuarioId);
         verificarTrofeoTornadoDeLetras(usuarioId);
-        finish();
     }
 
     // Metodo para desordenar las palabras
@@ -398,7 +436,7 @@ public class JuegoActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<Boolean> task) {
                     if (task.isSuccessful() && task.getResult()) {
-                        mostrarToast("¡Has ganado el trofeo Estratega Verbal!");
+                        mostrarSnackbarPersonalizado("¡Has ganado el trofeo Estratega Verbal!");
                     }
                 }
             });
@@ -411,7 +449,7 @@ public class JuegoActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<Boolean> task) {
                     if (task.isSuccessful() && task.getResult()) {
-                        mostrarToast("¡Has ganado el trofeo Explorador de Idiomas!");
+                        mostrarSnackbarPersonalizado("¡Has ganado el trofeo Explorador de Idiomas!");
                     }
                 }
             });
@@ -440,7 +478,7 @@ public class JuegoActivity extends AppCompatActivity {
                                     @Override
                                     public void onComplete(@NonNull Task<Boolean> task) {
                                         if (task.isSuccessful() && task.getResult()) {
-                                            mostrarToast("¡Has ganado el trofeo Linguistico Intrepido!");
+                                            mostrarSnackbarPersonalizado("¡Has ganado el trofeo Linguistico Intrepido!");
                                         }
                                     }
                                 });
@@ -522,7 +560,7 @@ public class JuegoActivity extends AppCompatActivity {
                                     @Override
                                     public void onComplete(@NonNull Task<Boolean> task) {
                                         if (task.isSuccessful() && task.getResult()) {
-                                            mostrarToast("¡Has ganado el trofeo Luchador de Letras!");
+                                            mostrarSnackbarPersonalizado("¡Has ganado el trofeo Luchador de Letras!");
                                         }
                                     }
                                 });
@@ -562,7 +600,7 @@ public class JuegoActivity extends AppCompatActivity {
                                                 @Override
                                                 public void onComplete(@NonNull Task<Boolean> task) {
                                                     if (task.isSuccessful() && task.getResult()) {
-                                                        mostrarToast("!Has ganado el trofeo Maestro de la Palabra¡");
+                                                        mostrarSnackbarPersonalizado("!Has ganado el trofeo Maestro de la Palabra¡");
                                                     }
                                                 }
                                             });
@@ -611,7 +649,7 @@ public class JuegoActivity extends AppCompatActivity {
                                     @Override
                                     public void onComplete(@NonNull Task<Boolean> task) {
                                         if (task.isSuccessful() && task.getResult()) {
-                                            mostrarToast("¡Has ganado el trofeo Reloj Maestro!");
+                                            mostrarSnackbarPersonalizado("¡Has ganado el trofeo Reloj Maestro!");
                                         }
                                     }
                                 });
@@ -657,7 +695,7 @@ public class JuegoActivity extends AppCompatActivity {
                                     @Override
                                     public void onComplete(@NonNull Task<Boolean> task) {
                                         if (task.isSuccessful() && task.getResult()) {
-                                            mostrarToast("¡Has ganado el trofeo Sprinter Verbal!");
+                                            mostrarSnackbarPersonalizado("¡Has ganado el trofeo Sprinter Verbal!");
                                         }
                                     }
                                 });
@@ -696,7 +734,7 @@ public class JuegoActivity extends AppCompatActivity {
                                     @Override
                                     public void onComplete(@NonNull Task<Boolean> task) {
                                         if (task.isSuccessful() && task.getResult()) {
-                                            mostrarToast("¡Has ganado el trofeo Superviviente Linguístico!");
+                                            mostrarSnackbarPersonalizado("¡Has ganado el trofeo Superviviente Linguístico!");
                                         }
                                     }
                                 });
@@ -731,7 +769,7 @@ public class JuegoActivity extends AppCompatActivity {
                                     @Override
                                     public void onComplete(@NonNull Task<Boolean> task) {
                                         if (task.isSuccessful() && task.getResult()) {
-                                            mostrarToast("¡Has ganado el trofeo Tornado de Letras!");
+                                            mostrarSnackbarPersonalizado("¡Has ganado el trofeo Tornado de Letras!");
                                         }
                                     }
                                 });
@@ -787,8 +825,33 @@ public class JuegoActivity extends AppCompatActivity {
         });
     }
 
-    private void mostrarToast(String mensaje){
-        Toast.makeText(JuegoActivity.this,mensaje,Toast.LENGTH_SHORT).show();
+    private void mostrarSnackbarPersonalizado(String mensaje) {
+        // Obtén el CoordinatorLayout o cualquier otro ViewGroup que estés usando como contenedor principal
+        ConstraintLayout constraintLayout = findViewById(R.id.container_juego);
+
+        // Infla el layout personalizado
+        View snackbarView = LayoutInflater.from(this).inflate(R.layout.custom_snackbar, null);
+        TextView snackbarText = snackbarView.findViewById(R.id.snackbar_text);
+        LottieAnimationView lottieAnimationView = snackbarView.findViewById(R.id.lottie_animation);
+
+        // Configura el mensaje y la animación
+        snackbarText.setText(mensaje);
+        lottieAnimationView.setAnimation(R.raw.confeti);
+        lottieAnimationView.playAnimation();
+
+        // Crea el Snackbar personalizado
+        Snackbar snackbar = Snackbar.make(constraintLayout, "", Snackbar.LENGTH_LONG);
+        snackbar.getView().setBackgroundColor(Color.TRANSPARENT); // Hace que el fondo del Snackbar sea transparente
+        snackbar.setAction("OK", null); // Establece el texto del botón de acción y no asigna un OnClickListener
+        snackbar.setActionTextColor(Color.WHITE); // Cambia el color del texto del botón "OK"
+
+        // Reemplaza el contenido del Snackbar con el layout personalizado
+        snackbar.setAnchorView(snackbarView);
+
+        // Muestra el Snackbar
+        snackbar.show();
     }
+
+
 
 }

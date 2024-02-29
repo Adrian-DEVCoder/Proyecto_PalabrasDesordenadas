@@ -10,22 +10,19 @@
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:enableOnBackInvokedCallback="true"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/logo_app"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/logo_app"
         android:supportsRtl="true"
         android:theme="@style/Theme.Proyecto_PalabrasDesordenadas"
         tools:targetApi="tiramisu">
-        <activity
-            android:name=".DerrotaActivity"
-            android:exported="false" />
-        <activity
-            android:name=".VictoriaDerrotaActivity"
-            android:exported="false" />
 
         <service android:name=".BackgroundSoundService" />
         <service android:name=".TrophyService" />
 
+        <activity
+            android:name=".VictoriaDerrotaActivity"
+            android:exported="false" />
         <activity
             android:name=".JuegoMultijugadorActivity"
             android:exported="false" />

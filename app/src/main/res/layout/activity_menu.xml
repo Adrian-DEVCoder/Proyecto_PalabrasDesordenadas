@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#9664EF"
+    android:background="#673AB7"
     tools:context=".MenuActivity">
 
     <ImageView
@@ -15,7 +15,7 @@
         android:background="@drawable/borde_redondo"
         android:contentDescription="Logo de Chaos"
         android:scaleType="centerCrop"
-        android:src="@drawable/logochaos"
+        android:src="@drawable/logo_app"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,60 +23,74 @@
 
     <Button
         android:id="@+id/btn_nueva_partida"
-        android:layout_width="250dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="164dp"
         android:layout_marginEnd="32dp"
-        android:backgroundTint="#673AB7"
-        android:fontFamily="@font/montserrat_medium"
+        android:backgroundTint="#4A2192"
+        android:fontFamily="@font/montserrat_semibold"
         android:text="NUEVA PARTIDA"
+        android:textColor="#EFB810"
+        android:textSize="16sp"
+        android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.505"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/img_logo2" />
+        app:layout_constraintTop_toBottomOf="@+id/img_logo2"
+        app:strokeColor="#EFB810"
+        app:strokeWidth="1dp" />
 
     <ImageButton
         android:id="@+id/btn_idioma"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
-        android:backgroundTint="#673AB7"
+        android:layout_marginEnd="52dp"
+        android:backgroundTint="#4A2192"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.777"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_nueva_partida"
         app:srcCompat="@drawable/espana" />
 
     <Button
         android:id="@+id/btn_configuracion"
-        android:layout_width="180dp"
+        android:layout_width="220dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="80dp"
+        android:layout_marginStart="55dp"
         android:layout_marginTop="36dp"
-        android:layout_marginEnd="32dp"
-        android:backgroundTint="#673AB7"
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="#4A2192"
         android:backgroundTintMode="add"
-        android:fontFamily="@font/montserrat_medium"
+        android:fontFamily="@font/montserrat_semibold"
         android:text="CONFIGURACION"
+        android:textColor="#EFB810"
+        android:textSize="16sp"
+        android:textStyle="italic"
         app:layout_constraintEnd_toStartOf="@+id/btn_idioma"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_nueva_partida" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_nueva_partida"
+        app:strokeColor="#EFB810"
+        app:strokeWidth="1dp" />
 
     <Button
         android:id="@+id/btn_perfil"
-        android:layout_width="250dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
-        android:backgroundTint="#673AB7"
-        android:fontFamily="@font/montserrat_medium"
+        android:backgroundTint="#4A2192"
+        android:fontFamily="@font/montserrat_semibold"
         android:text="PERFIL"
+        android:textColor="#EFB810"
+        android:textSize="16sp"
+        android:textStyle="italic"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.509"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_configuracion"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0"
+        app:strokeColor="#EFB810"
+        app:strokeWidth="1dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
