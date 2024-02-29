@@ -279,7 +279,7 @@ public class JuegoActivity extends AppCompatActivity {
         };
         textViewTimer.setTextSize(32);
         textViewTimer.setTextColor(Color.parseColor("#EFB810"));
-        Typeface customTypeface = ResourcesCompat.getFont(this, R.font.montserrat_bold);
+        Typeface customTypeface = ResourcesCompat.getFont(this, R.font.montserrat_semibold);
         textViewTimer.setTypeface(customTypeface);
         countDownTimer.start();
     }
@@ -352,7 +352,7 @@ public class JuegoActivity extends AppCompatActivity {
                 {'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'Y', 'Z'}
         };
         // Fuente personalizada para los botones
-        Typeface customTypeface = ResourcesCompat.getFont(this, R.font.montserrat_bold);
+        Typeface customTypeface = ResourcesCompat.getFont(this, R.font.montserrat_semibold);
         // Valores para el grid del usuario y ancho de botones
         int numColumnas = 8;
         gridTeclado.setColumnCount(numColumnas);
