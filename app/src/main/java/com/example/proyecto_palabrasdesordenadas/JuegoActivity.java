@@ -1,11 +1,10 @@
 package com.example.proyecto_palabrasdesordenadas;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
 
-import android.animation.ArgbEvaluator;
-import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -13,10 +12,10 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.ScaleAnimation;
@@ -65,6 +64,7 @@ public class JuegoActivity extends AppCompatActivity {
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     String usuarioId = user.getUid();
     DBHandler dbHandler;
+    private boolean imagenCambiada;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +74,7 @@ public class JuegoActivity extends AppCompatActivity {
         dbHandler = new DBHandler(JuegoActivity.this);
         // Obtenemos los valores del idioma seleccionado, dificultad y modo de juego
         Intent intent = getIntent();
-        boolean imagenCambiada = intent.getBooleanExtra("imagenCambiada", false);
+        imagenCambiada = intent.getBooleanExtra("imagenCambiada", false);
         String dificultadSeleccionada = intent.getStringExtra("dificultadSeleccionada");
         boolean modoContrarreloj = intent.getBooleanExtra("modoContrarreloj", false);
         boolean modoPuntuacion = intent.getBooleanExtra("modoPuntuacion", false);
@@ -157,8 +157,7 @@ public class JuegoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String palabraUsuario = editTextPalabraUsuario.getText().toString().trim().toLowerCase();
-                String palabraMostrada = textViewPalabra.getText().toString().trim().toLowerCase();
-                if (!palabraUsuario.isEmpty() && palabraUsuario.length() == palabraMostrada.length()) {
+                if (!palabraUsuario.isEmpty()) {
                     if (palabraUsuario.equals(palabraOriginal.toLowerCase())) {
                         soundManager.playSound(JuegoActivity.this, 5);
                         if (!imagenCambiada) {
@@ -204,13 +203,7 @@ public class JuegoActivity extends AppCompatActivity {
                                 break;
                             case 0:
                                 imageViewVida3.setImageResource(R.drawable.nlife);
-                                if (!imagenCambiada) {
-                                    Toast.makeText(JuegoActivity.this, "Se agotaron las vidas del juego. Juego Terminado.", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Toast.makeText(JuegoActivity.this, "The game lives have run out. Game Over.", Toast.LENGTH_SHORT).show();
-                                }
                                 terminarJuego(imagenCambiada, puntuacion, modoContrarreloj, modoPuntuacion);
-                                finish();
                                 break;
                             default:
                                 break;
@@ -227,6 +220,45 @@ public class JuegoActivity extends AppCompatActivity {
             }
         });
     }
+    // Metodo para mostrar un dialogo cuando el juego termina
+    private void mostrarDialogoJuegoTerminado() {
+        // Crear el Dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(JuegoActivity.this);
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_game_over, null);
+        builder.setView(dialogView);
+        // Configurar el mensaje del Dialog
+        TextView dialogTitle = dialogView.findViewById(R.id.tv_dialog_titulo);
+        if (!imagenCambiada) {
+            dialogTitle.setText("JUEGO TERMINADO");
+        } else {
+            dialogTitle.setText("GAME OVER");
+        }
+        TextView dialogMessage = dialogView.findViewById(R.id.tv_dialog_mensaje);
+        if(!imagenCambiada) {
+            dialogMessage.setText("Se agotaron las vidas del juego");
+        } else {
+            dialogMessage.setText("There are no more lifes left");
+        }
+        // Configurar el botón del Dialog
+        Button dialogButton = dialogView.findViewById(R.id.btn_volvermenu);
+        if(!imagenCambiada){
+            dialogButton.setText("VOLVER AL MENU PRINCIPAL");
+        } else {
+            dialogButton.setText("BACK TO MAIN MENU");
+        }
+        dialogButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(JuegoActivity.this, PartidaActivity.class));
+            }
+        });
+
+        // Mostrar el Dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
     // Metodo para iniciar el temporizador, en el modo contrarreloj
     private void iniciarTemporizador(boolean imagenCambiada, boolean modoContrarreloj, boolean modoPuntuacion) {
         TextView textViewTimer = findViewById(R.id.tv_timerscore);
@@ -238,11 +270,6 @@ public class JuegoActivity extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-                if(!imagenCambiada){
-                    textViewTimer.setText("Tiempo agotado!!");
-                } else {
-                    textViewTimer.setText("Time out!!");
-                }
                 terminarJuego(imagenCambiada,puntuacion,modoContrarreloj,modoPuntuacion);
             }
         };
@@ -271,6 +298,11 @@ public class JuegoActivity extends AppCompatActivity {
     // Metodo para terminar el juego
     private void terminarJuego(boolean imagenCambiada, int puntuacion, boolean modoContrarreloj, boolean modoPuntuacion) {
         // Verificar si el temporizador es null antes de cancelarlo
+        if(!imagenCambiada){
+            mostrarDialogoJuegoTerminado();
+        } else {
+            mostrarDialogoJuegoTerminado();
+        }
         Intent stopIntent = new Intent(this, BackgroundSoundService.class);
         stopService(stopIntent);
         Intent startIntent = new Intent(this, BackgroundSoundService.class);
@@ -285,11 +317,6 @@ public class JuegoActivity extends AppCompatActivity {
         } else {
             modo = "modoPuntuacion";
         }
-        if(!imagenCambiada){
-            Toast.makeText(JuegoActivity.this,"Se agotaron las vidas del juego. Juego Terminado.",Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(JuegoActivity.this,"The game lives have run out. Game Over.",Toast.LENGTH_SHORT).show();
-        }
         registrarPartida(usuarioId,modo,puntuacion,vidasRestantes);
         verificarEstrategaVerbal(usuarioId);
         verificarExploradorDeIdiomas(usuarioId, imagenCambiada);
@@ -300,7 +327,6 @@ public class JuegoActivity extends AppCompatActivity {
         verificarTrofeoSprinterVerbal(usuarioId);
         verificarTrofeoSupervivienteLinguistico(usuarioId);
         verificarTrofeoTornadoDeLetras(usuarioId);
-        finish();
     }
 
     // Metodo para desordenar las palabras
