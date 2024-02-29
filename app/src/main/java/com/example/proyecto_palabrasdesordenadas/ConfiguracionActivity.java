@@ -39,7 +39,7 @@ public class ConfiguracionActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 MainActivity.sonido++;
-                if(MainActivity.sonido > SoundEffect.values().length){
+                if(MainActivity.sonido > SoundEffect.values().length - 2){
                     MainActivity.sonido = 1;
                 }
                 String newSoundName = SoundEffect.values()[MainActivity.sonido - 1].name();

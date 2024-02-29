@@ -14,6 +14,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.animation.ScaleAnimation;
 import android.widget.Button;
 import android.widget.EditText;
@@ -63,7 +64,6 @@ public class JuegoMultijugadorActivity extends AppCompatActivity {
         idRival = intent.getStringExtra("idRival");
         // Asegurarse de que los identificadores no sean nulos
         if (idUsuario == null || idRival == null) {
-            Toast.makeText(this, "Error al iniciar el juego. Los identificadores de los jugadores no se proporcionaron.", Toast.LENGTH_LONG).show();
             finish();
             return;
         }
@@ -312,7 +312,9 @@ public class JuegoMultijugadorActivity extends AppCompatActivity {
         String palabraUsuario = editTextPalabraUsuario.getText().toString();
         String palabraGenerada = palabraOriginal;
         if (palabraUsuario.equalsIgnoreCase(palabraGenerada)) {
-            Toast.makeText(JuegoMultijugadorActivity.this, "¡Correcto!", Toast.LENGTH_SHORT).show();
+            soundManager.playSound(JuegoMultijugadorActivity.this, 5);
+            Animation scaleAnimation = AnimationUtils.loadAnimation(JuegoMultijugadorActivity.this, R.anim.scale_animation_success);
+            editTextPalabraUsuario.startAnimation(scaleAnimation);
             editTextPalabraUsuario.setText("");
             int damage = new Random().nextInt(150) + 151; // Calcular el daño basado en la palabra
             aplicarDañoRival(damage); // Aplicar daño al rival
@@ -325,7 +327,9 @@ public class JuegoMultijugadorActivity extends AppCompatActivity {
             verificarDañoRival(); // Ya no se necesita retornar el daño del rival, se maneja internamente
             generarDesordenarPalabra(esIngles);
         } else {
-            Toast.makeText(JuegoMultijugadorActivity.this, "Incorrecto, intenta de nuevo.", Toast.LENGTH_SHORT).show();
+            soundManager.playSound(JuegoMultijugadorActivity.this, 6);
+            Animation scaleAnimation = AnimationUtils.loadAnimation(JuegoMultijugadorActivity.this, R.anim.shake_animation);
+            editTextPalabraUsuario.startAnimation(scaleAnimation);
         }
     }
 

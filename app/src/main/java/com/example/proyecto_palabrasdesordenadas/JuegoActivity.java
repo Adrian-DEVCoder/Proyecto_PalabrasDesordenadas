@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
 
+import android.animation.ArgbEvaluator;
+import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -14,7 +16,9 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.animation.ScaleAnimation;
 import android.widget.Button;
 import android.widget.EditText;
@@ -70,21 +74,21 @@ public class JuegoActivity extends AppCompatActivity {
         dbHandler = new DBHandler(JuegoActivity.this);
         // Obtenemos los valores del idioma seleccionado, dificultad y modo de juego
         Intent intent = getIntent();
-        boolean imagenCambiada = intent.getBooleanExtra("imagenCambiada",false);
+        boolean imagenCambiada = intent.getBooleanExtra("imagenCambiada", false);
         String dificultadSeleccionada = intent.getStringExtra("dificultadSeleccionada");
-        boolean modoContrarreloj = intent.getBooleanExtra("modoContrarreloj",false);
-        boolean modoPuntuacion = intent.getBooleanExtra("modoPuntuacion",false);
+        boolean modoContrarreloj = intent.getBooleanExtra("modoContrarreloj", false);
+        boolean modoPuntuacion = intent.getBooleanExtra("modoPuntuacion", false);
         Intent stopIntent = new Intent(this, BackgroundSoundService.class);
         stopService(stopIntent);
 
         // Iniciar el servicio de nuevo con la nueva canción
         Intent startIntent = new Intent(this, BackgroundSoundService.class);
-        startIntent.putExtra("song_selection",  2); //  2 para la canción "reloj"
+        startIntent.putExtra("song_selection", 2); //  2 para la canción "reloj"
         startService(startIntent);
         // Declaracion y asignacion de variables
         Button buttonComprobar = findViewById(R.id.btn_comprobar);
         Button buttonBorrar = findViewById(R.id.btn_borrar);
-        if(!imagenCambiada){
+        if (!imagenCambiada) {
             buttonComprobar.setText(R.string.comprobar);
             buttonBorrar.setText(R.string.boton_borrar);
         } else {
@@ -115,7 +119,7 @@ public class JuegoActivity extends AppCompatActivity {
             imageViewVida3.setVisibility(View.VISIBLE);
             textViewPuntuacion.setVisibility(View.GONE);
             textViewScore.setVisibility(View.GONE);
-            iniciarTemporizador(imagenCambiada,modoContrarreloj,modoPuntuacion);
+            iniciarTemporizador(imagenCambiada, modoContrarreloj, modoPuntuacion);
         } else if (modoPuntuacion) {
             // Modo Puntuación: Mostramos la puntuación y las vidas, ocultamos el temporizador
             textViewPuntuacion.setVisibility(View.VISIBLE);
@@ -156,19 +160,21 @@ public class JuegoActivity extends AppCompatActivity {
                 String palabraMostrada = textViewPalabra.getText().toString().trim().toLowerCase();
                 if (!palabraUsuario.isEmpty() && palabraUsuario.length() == palabraMostrada.length()) {
                     if (palabraUsuario.equals(palabraOriginal.toLowerCase())) {
-                        soundManager.playSound(JuegoActivity.this,5);
-                        if(!imagenCambiada){
-                            Toast.makeText(JuegoActivity.this,"Has acertado!",Toast.LENGTH_SHORT).show();
+                        soundManager.playSound(JuegoActivity.this, 5);
+                        if (!imagenCambiada) {
+                            Animation scaleAnimation = AnimationUtils.loadAnimation(JuegoActivity.this, R.anim.scale_animation_success);
+                            editTextPalabraUsuario.startAnimation(scaleAnimation);
                         } else {
-                            Toast.makeText(JuegoActivity.this,"You're right!",Toast.LENGTH_SHORT).show();
+                            Animation scaleAnimation = AnimationUtils.loadAnimation(JuegoActivity.this, R.anim.scale_animation_success);
+                            editTextPalabraUsuario.startAnimation(scaleAnimation);
                         }
                         do {
                             palabraUsuario = (String) dbHandler.generarPalabraAleatoria(imagenCambiada);
                         } while (!verificarLongitudPalabra(palabraUsuario, dificultadSeleccionada));
-                        registrarPalabraFormada(usuarioId,palabraUsuario);
+                        registrarPalabraFormada(usuarioId, palabraUsuario);
                         if (modoPuntuacion) {
                             Random random = new Random();
-                            int puntuacionAleatoria = random.nextInt(11) +  15;
+                            int puntuacionAleatoria = random.nextInt(11) + 15;
                             puntuacion += puntuacionAleatoria;
                             textViewScore.setText(String.valueOf(puntuacion));
                         } else {
@@ -180,14 +186,16 @@ public class JuegoActivity extends AppCompatActivity {
                         textViewPalabra.setText(nuevaPalabraDesordenada);
                         editTextPalabraUsuario.setText("");
                     } else {
-                        soundManager.playSound(JuegoActivity.this,6);
-                        if(!imagenCambiada){
-                            Toast.makeText(JuegoActivity.this,"Has fallado!",Toast.LENGTH_SHORT).show();
+                        soundManager.playSound(JuegoActivity.this, 6);
+                        if (!imagenCambiada) {
+                            Animation shakeAnimation = AnimationUtils.loadAnimation(JuegoActivity.this, R.anim.shake_animation);
+                            editTextPalabraUsuario.startAnimation(shakeAnimation);
                         } else {
-                            Toast.makeText(JuegoActivity.this,"You failed!",Toast.LENGTH_SHORT).show();
+                            Animation shakeAnimation = AnimationUtils.loadAnimation(JuegoActivity.this, R.anim.shake_animation);
+                            editTextPalabraUsuario.startAnimation(shakeAnimation);
                         }
                         vidasRestantes--;
-                        switch (vidasRestantes){
+                        switch (vidasRestantes) {
                             case 2:
                                 imageViewVida1.setImageResource(R.drawable.nlife);
                                 break;
@@ -196,12 +204,12 @@ public class JuegoActivity extends AppCompatActivity {
                                 break;
                             case 0:
                                 imageViewVida3.setImageResource(R.drawable.nlife);
-                                if(!imagenCambiada){
-                                    Toast.makeText(JuegoActivity.this,"Se agotaron las vidas del juego. Juego Terminado.",Toast.LENGTH_SHORT).show();
+                                if (!imagenCambiada) {
+                                    Toast.makeText(JuegoActivity.this, "Se agotaron las vidas del juego. Juego Terminado.", Toast.LENGTH_SHORT).show();
                                 } else {
-                                    Toast.makeText(JuegoActivity.this,"The game lives have run out. Game Over.",Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(JuegoActivity.this, "The game lives have run out. Game Over.", Toast.LENGTH_SHORT).show();
                                 }
-                                terminarJuego(imagenCambiada,puntuacion,modoContrarreloj,modoPuntuacion);
+                                terminarJuego(imagenCambiada, puntuacion, modoContrarreloj, modoPuntuacion);
                                 finish();
                                 break;
                             default:
