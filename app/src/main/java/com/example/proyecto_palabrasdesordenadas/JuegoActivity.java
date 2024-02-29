@@ -3,6 +3,8 @@ package com.example.proyecto_palabrasdesordenadas;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.res.ResourcesCompat;
 
 import android.content.Intent;
@@ -26,12 +28,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -432,7 +436,7 @@ public class JuegoActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<Boolean> task) {
                     if (task.isSuccessful() && task.getResult()) {
-                        mostrarToast("¡Has ganado el trofeo Estratega Verbal!");
+                        mostrarSnackbarPersonalizado("¡Has ganado el trofeo Estratega Verbal!");
                     }
                 }
             });
@@ -445,7 +449,7 @@ public class JuegoActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<Boolean> task) {
                     if (task.isSuccessful() && task.getResult()) {
-                        mostrarToast("¡Has ganado el trofeo Explorador de Idiomas!");
+                        mostrarSnackbarPersonalizado("¡Has ganado el trofeo Explorador de Idiomas!");
                     }
                 }
             });
@@ -474,7 +478,7 @@ public class JuegoActivity extends AppCompatActivity {
                                     @Override
                                     public void onComplete(@NonNull Task<Boolean> task) {
                                         if (task.isSuccessful() && task.getResult()) {
-                                            mostrarToast("¡Has ganado el trofeo Linguistico Intrepido!");
+                                            mostrarSnackbarPersonalizado("¡Has ganado el trofeo Linguistico Intrepido!");
                                         }
                                     }
                                 });
@@ -556,7 +560,7 @@ public class JuegoActivity extends AppCompatActivity {
                                     @Override
                                     public void onComplete(@NonNull Task<Boolean> task) {
                                         if (task.isSuccessful() && task.getResult()) {
-                                            mostrarToast("¡Has ganado el trofeo Luchador de Letras!");
+                                            mostrarSnackbarPersonalizado("¡Has ganado el trofeo Luchador de Letras!");
                                         }
                                     }
                                 });
@@ -596,7 +600,7 @@ public class JuegoActivity extends AppCompatActivity {
                                                 @Override
                                                 public void onComplete(@NonNull Task<Boolean> task) {
                                                     if (task.isSuccessful() && task.getResult()) {
-                                                        mostrarToast("!Has ganado el trofeo Maestro de la Palabra¡");
+                                                        mostrarSnackbarPersonalizado("!Has ganado el trofeo Maestro de la Palabra¡");
                                                     }
                                                 }
                                             });
@@ -645,7 +649,7 @@ public class JuegoActivity extends AppCompatActivity {
                                     @Override
                                     public void onComplete(@NonNull Task<Boolean> task) {
                                         if (task.isSuccessful() && task.getResult()) {
-                                            mostrarToast("¡Has ganado el trofeo Reloj Maestro!");
+                                            mostrarSnackbarPersonalizado("¡Has ganado el trofeo Reloj Maestro!");
                                         }
                                     }
                                 });
@@ -691,7 +695,7 @@ public class JuegoActivity extends AppCompatActivity {
                                     @Override
                                     public void onComplete(@NonNull Task<Boolean> task) {
                                         if (task.isSuccessful() && task.getResult()) {
-                                            mostrarToast("¡Has ganado el trofeo Sprinter Verbal!");
+                                            mostrarSnackbarPersonalizado("¡Has ganado el trofeo Sprinter Verbal!");
                                         }
                                     }
                                 });
@@ -730,7 +734,7 @@ public class JuegoActivity extends AppCompatActivity {
                                     @Override
                                     public void onComplete(@NonNull Task<Boolean> task) {
                                         if (task.isSuccessful() && task.getResult()) {
-                                            mostrarToast("¡Has ganado el trofeo Superviviente Linguístico!");
+                                            mostrarSnackbarPersonalizado("¡Has ganado el trofeo Superviviente Linguístico!");
                                         }
                                     }
                                 });
@@ -765,7 +769,7 @@ public class JuegoActivity extends AppCompatActivity {
                                     @Override
                                     public void onComplete(@NonNull Task<Boolean> task) {
                                         if (task.isSuccessful() && task.getResult()) {
-                                            mostrarToast("¡Has ganado el trofeo Tornado de Letras!");
+                                            mostrarSnackbarPersonalizado("¡Has ganado el trofeo Tornado de Letras!");
                                         }
                                     }
                                 });
@@ -821,8 +825,33 @@ public class JuegoActivity extends AppCompatActivity {
         });
     }
 
-    private void mostrarToast(String mensaje){
-        Toast.makeText(JuegoActivity.this,mensaje,Toast.LENGTH_SHORT).show();
+    private void mostrarSnackbarPersonalizado(String mensaje) {
+        // Obtén el CoordinatorLayout o cualquier otro ViewGroup que estés usando como contenedor principal
+        ConstraintLayout constraintLayout = findViewById(R.id.container_juego);
+
+        // Infla el layout personalizado
+        View snackbarView = LayoutInflater.from(this).inflate(R.layout.custom_snackbar, null);
+        TextView snackbarText = snackbarView.findViewById(R.id.snackbar_text);
+        LottieAnimationView lottieAnimationView = snackbarView.findViewById(R.id.lottie_animation);
+
+        // Configura el mensaje y la animación
+        snackbarText.setText(mensaje);
+        lottieAnimationView.setAnimation(R.raw.confeti);
+        lottieAnimationView.playAnimation();
+
+        // Crea el Snackbar personalizado
+        Snackbar snackbar = Snackbar.make(constraintLayout, "", Snackbar.LENGTH_LONG);
+        snackbar.getView().setBackgroundColor(Color.TRANSPARENT); // Hace que el fondo del Snackbar sea transparente
+        snackbar.setAction("OK", null); // Establece el texto del botón de acción y no asigna un OnClickListener
+        snackbar.setActionTextColor(Color.WHITE); // Cambia el color del texto del botón "OK"
+
+        // Reemplaza el contenido del Snackbar con el layout personalizado
+        snackbar.setAnchorView(snackbarView);
+
+        // Muestra el Snackbar
+        snackbar.show();
     }
+
+
 
 }
