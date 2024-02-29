@@ -441,9 +441,10 @@ public class JuegoMultijugadorActivity extends AppCompatActivity {
     }
 
     private void generarDesordenarPalabra(boolean esIngles) {
-        // Aquí asumimos que tienes una función para generar una palabra aleatoria
-        // y luego desordenarla. Por ejemplo:
-        palabraOriginal = dbHandler.generarPalabraAleatoria(esIngles); // Esta sería tu palabra generada
+        palabraOriginal = dbHandler.generarPalabraAleatoria(esIngles);
+        while (palabraOriginal.length() < 3 || palabraOriginal.length() > 6) {
+            palabraOriginal = dbHandler.generarPalabraAleatoria(esIngles);
+        }
         String palabraGenerada = desordenarPalabra(palabraOriginal);
         TextView textViewPalabra = findViewById(R.id.tv_palabra);
         textViewPalabra.setText(palabraGenerada);

@@ -24,10 +24,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="320dp"
-        android:fontFamily="@font/montserrat_bold"
+        android:fontFamily="@font/montserrat_medium"
         android:text="Esperando a otro jugador..."
-        android:textColor="#000000"
+        android:textColor="#EFB810"
         android:textSize="24sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.506"
         app:layout_constraintStart_toStartOf="parent"
@@ -37,13 +38,18 @@
         android:id="@+id/btn_cancelar"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
+        android:backgroundTint="#4A2192"
         android:text="CANCELAR"
+        android:textColor="#EFB810"
         android:textSize="20sp"
+        android:textStyle="italic"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_esperando"
-        app:layout_constraintVertical_bias="0.259" />
+        app:layout_constraintVertical_bias="0.259"
+        app:strokeColor="#EFB810"
+        app:strokeWidth="1dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

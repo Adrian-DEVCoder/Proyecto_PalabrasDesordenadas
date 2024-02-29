@@ -24,10 +24,20 @@ public class VictoriaDerrotaActivity extends AppCompatActivity {
         // Configurar el TextView y el color de fondo según si es ganador o perdedor
         if (esGanador) {
             textViewVictoria.setText("VICTORIA");
-            getWindow().getDecorView().setBackgroundColor(Color.parseColor("#2DECB5"));
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    getWindow().getDecorView().setBackgroundResource(R.drawable.background_color_victoria);
+                }
+            });
         } else {
             textViewVictoria.setText("DERROTA");
-            getWindow().getDecorView().setBackgroundColor(Color.parseColor("#EC2D53"));
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    getWindow().getDecorView().setBackgroundResource(R.drawable.background_color_derrota);
+                }
+            });
         }
         buttonVolver.setOnClickListener(new View.OnClickListener() {
             @Override

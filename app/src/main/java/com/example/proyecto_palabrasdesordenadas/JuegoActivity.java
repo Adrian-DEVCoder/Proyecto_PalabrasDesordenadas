@@ -239,7 +239,7 @@ public class JuegoActivity extends AppCompatActivity {
             }
         };
         textViewTimer.setTextSize(32);
-        textViewTimer.setTextColor(Color.RED);
+        textViewTimer.setTextColor(Color.parseColor("#EFB810"));
         Typeface customTypeface = ResourcesCompat.getFont(this, R.font.montserrat_bold);
         textViewTimer.setTypeface(customTypeface);
         countDownTimer.start();

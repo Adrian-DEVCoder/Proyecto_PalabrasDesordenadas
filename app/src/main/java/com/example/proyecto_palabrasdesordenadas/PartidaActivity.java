@@ -1,10 +1,12 @@
 package com.example.proyecto_palabrasdesordenadas;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -82,8 +84,6 @@ public class PartidaActivity extends AppCompatActivity {
                 } else if (dificultadActual.equalsIgnoreCase("HARD")){
                     buttonDificultad.setText("EASY");
                     dificultadSeleccionada = "EASY";
-                } else {
-                    Toast.makeText(PartidaActivity.this, "Error al seleccionar la dificultad",Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -123,7 +123,12 @@ public class PartidaActivity extends AppCompatActivity {
             public void onClick(View view) {
                 soundManager.playSound(PartidaActivity.this, MainActivity.sonido);
                 if(!buttonContrarrelojClickado && !buttonPuntuacionClickado){
-                    Toast.makeText(PartidaActivity.this, "Selecciona un modo de juego.", Toast.LENGTH_SHORT).show();
+                    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(PartidaActivity.this);
+                    LayoutInflater inflater = getLayoutInflater();
+                    View dialogView = inflater.inflate(R.layout.dialog_seleccionar_modo, null);
+                    dialogBuilder.setView(dialogView);
+                    AlertDialog alertDialog = dialogBuilder.create();
+                    alertDialog.show();
                 } else {
                     Intent intent = new Intent(PartidaActivity.this, JuegoActivity.class);
                     intent.putExtra("imagenCambiada", imagenCambiada);
