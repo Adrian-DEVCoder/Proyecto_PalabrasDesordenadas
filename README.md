@@ -2,7 +2,7 @@ Proyecto - Juego de Palabras Desordenadas
 ----------------------------------------
 Realizado por:
 
-· @Xema88 - José María Cañas
+· @Xema88
 
 · @DanielBolero - Daniel Delgado
 
